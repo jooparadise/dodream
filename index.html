@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>두드림 모기지 | 모기지 어렵지 않습니다. 두드리면 열립니다.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --navy: #0B2D5E;
+      --blue: #1A4A8A;
+      --blue-light: #2563B8;
+      --orange: #FFA500;
+      --white: #ffffff;
+      --bg: #f5f6f8;
+      --card-bg: #ffffff;
+      --text: #1a1a2e;
+      --text-muted: #6b7280;
+      --border: rgba(0,0,0,0.1);
+      --radius: 12px;
+      --radius-lg: 16px;
+    }
+
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      color: var(--text);
+      background: var(--white);
+      overflow-x: hidden;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, #0B2D5E 0%, #1A4A8A 55%, #2563B8 100%);
+      color: white;
+      padding: 2.5rem 1.5rem 3.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 280px; height: 280px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; left: -60px;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: rgba(255,165,0,0.08);
+    }
+
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      margin-bottom: 2.25rem;
+      position: relative;
+      z-index: 1;
+    }
+    .logo-icon-block {
+      display: flex;
+      align-items: center;
+      padding-right: 18px;
+    }
+    .logo-icon-block img {
+      width: 64px;
+      height: 64px;
+      object-fit: contain;
+      border-radius: 10px;
+    }
+    .logo-divider {
+      width: 1px;
+      height: 56px;
+      background: rgba(255,255,255,0.25);
+      margin-right: 18px;
+      flex-shrink: 0;
+    }
+    .logo-text-block {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 3px;
+    }
+    .logo-tagline {
+      font-size: 12px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.65);
+      letter-spacing: 2.5px;
+      line-height: 1;
+    }
+    .logo-tagline strong {
+      font-weight: 900;
+      color: var(--orange);
+    }
+    .logo-name {
+      font-size: 22px;
+      font-weight: 900;
+      color: white;
+      line-height: 1.15;
+    }
+    .logo-sub {
+      font-size: 12px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.6);
+      letter-spacing: 0.5px;
+      margin-top: 1px;
+    }
+
+    /* DOOR ANIMATION */
+    .door-wrap {
+      width: 90px; height: 110px;
+      margin: 0 auto 1.75rem;
+      position: relative;
+      perspective: 500px;
+      z-index: 1;
+    }
+    .door-frame {
+      width: 90px; height: 110px;
+      border: 4px solid rgba(255,255,255,0.4);
+      border-radius: 6px 6px 0 0;
+      position: absolute; top: 0; left: 0; z-index: 3;
+      pointer-events: none;
+    }
+    .door-bg {
+      width: 82px; height: 102px;
+      position: absolute; top: 4px; left: 4px;
+      background: linear-gradient(135deg, #fff9e6, #fffbe8);
+      border-radius: 3px 3px 0 0;
+      z-index: 1;
+    }
+    .door-glow {
+      position: absolute; top: 4px; left: -16px;
+      width: 36px; height: 102px;
+      background: linear-gradient(90deg, transparent, rgba(255,220,100,0.35), transparent);
+      z-index: 2;
+      opacity: 0;
+      animation: glowSweep 4s ease-in-out infinite;
+    }
+    .door-panel {
+      width: 82px; height: 102px;
+      background: linear-gradient(135deg, #1e5fa8, #2a7de1);
+      border-radius: 3px 3px 0 0;
+      position: absolute; top: 4px; left: 4px;
+      transform-origin: left center;
+      transform-style: preserve-3d;
+      animation: doorKnock 4s ease-in-out infinite;
+      z-index: 4;
+    }
+    .door-panel::before {
+      content: '';
+      position: absolute;
+      top: 20%; left: 15%; right: 15%; bottom: 20%;
+      border: 1.5px solid rgba(255,255,255,0.2);
+      border-radius: 3px;
+    }
+    .door-knob {
+      width: 11px; height: 11px;
+      background: var(--orange);
+      border-radius: 50%;
+      position: absolute;
+      right: 11px; top: 50%;
+      transform: translateY(-50%);
+      box-shadow: 0 0 8px rgba(255,165,0,0.7);
+    }
+    @keyframes doorKnock {
+      0%   { transform: rotateY(0deg); }
+      8%   { transform: rotateY(-18deg); }
+      16%  { transform: rotateY(0deg); }
+      26%  { transform: rotateY(-11deg); }
+      34%  { transform: rotateY(0deg); }
+      50%  { transform: rotateY(0deg); }
+      72%  { transform: rotateY(-78deg); }
+      86%  { transform: rotateY(-78deg); }
+      98%  { transform: rotateY(0deg); }
+      100% { transform: rotateY(0deg); }
+    }
+    @keyframes glowSweep {
+      0%   { opacity: 0; left: -16px; }
+      50%  { opacity: 0; left: -16px; }
+      62%  { opacity: 1; left: 30px; }
+      80%  { opacity: 0; left: 86px; }
+      100% { opacity: 0; }
+    }
+
+    .hero-headline {
+      font-size: clamp(28px, 7vw, 36px);
+      font-weight: 900;
+      line-height: 1.35;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.5px;
+      position: relative; z-index: 1;
+    }
+    .hero-headline .acc { color: var(--orange); }
+    .hero-sub {
+      font-size: 17px;
+      opacity: 0.9;
+      line-height: 2.0;
+      margin-bottom: 2rem;
+      max-width: 400px;
+      margin-left: auto; margin-right: auto;
+      position: relative; z-index: 1;
+    }
+    .hero-cta {
+      display: inline-block;
+      background: var(--orange);
+      color: white;
+      font-size: 17px; font-weight: 700;
+      padding: 16px 38px;
+      border-radius: 50px;
+      border: none; cursor: pointer;
+      font-family: 'Noto Sans KR', sans-serif;
+      box-shadow: 0 4px 20px rgba(255,165,0,0.45);
+      transition: transform 0.15s, box-shadow 0.15s;
+      position: relative; z-index: 1;
+      text-decoration: none;
+    }
+    .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 6px 26px rgba(255,165,0,0.55); }
+    .badge-row {
+      display: flex; justify-content: center;
+      gap: 8px; margin-top: 1.5rem;
+      flex-wrap: wrap; position: relative; z-index: 1;
+    }
+    .badge {
+      background: rgba(255,255,255,0.13);
+      border: 1px solid rgba(255,255,255,0.28);
+      color: white; font-size: 13px;
+      padding: 6px 14px; border-radius: 20px;
+    }
+
+    /* ── SECTIONS COMMON ── */
+    section { padding: 3.5rem 1.75rem; }
+    .section-label {
+      font-size: 13px; font-weight: 700;
+      color: var(--blue); letter-spacing: 2px;
+      text-transform: uppercase; margin-bottom: 0.4rem;
+      text-align: center;
+    }
+    .section-title {
+      font-size: clamp(22px, 5vw, 28px);
+      font-weight: 900; line-height: 1.4;
+      margin-bottom: 1.5rem; text-align: center;
+    }
+
+    /* ── MAGIC RATE ── */
+    .magic-section { background: var(--white); }
+    .magic-card {
+      max-width: 560px; margin: 0 auto;
+      background: linear-gradient(135deg, #0B2D5E, #1A4A8A);
+      border-radius: var(--radius-lg);
+      padding: 2rem 1.75rem;
+      color: white;
+      position: relative; overflow: hidden;
+    }
+    .magic-card::after {
+      content: '✨';
+      position: absolute;
+      top: 14px; right: 18px;
+      font-size: 30px; opacity: 0.4;
+    }
+    .magic-headline {
+      font-size: 20px; font-weight: 900;
+      margin-bottom: 1.25rem; line-height: 1.5;
+    }
+    .magic-headline .acc { color: var(--orange); }
+    .magic-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .magic-list li {
+      font-size: 16px; line-height: 1.85;
+      display: flex; gap: 12px; align-items: flex-start;
+    }
+    .magic-list li::before { content: '★'; color: var(--orange); flex-shrink: 0; margin-top: 2px; }
+
+    /* ── PAIN CARDS ── */
+    .pain-section { background: var(--bg); }
+    .section-hint {
+      font-size: 15px; color: var(--text-muted);
+      margin-bottom: 1.5rem; text-align: center; margin-top: -0.75rem;
+    }
+    .pain-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px; max-width: 620px; margin: 0 auto 1.5rem;
+    }
+    .pain-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.4rem 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+    }
+    .pain-card:hover {
+      border-color: var(--blue);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(26,74,138,0.13);
+    }
+    .pain-icon { font-size: 32px; margin-bottom: 10px; display: block; }
+    .pain-text { font-size: 14px; color: var(--text-muted); line-height: 1.65; }
+    .tap-hint { font-size: 13px; color: var(--blue); margin-top: 9px; opacity: 0.75; }
+    .pain-arrow {
+      display: flex; align-items: center;
+      justify-content: center; gap: 10px; flex-wrap: wrap;
+      max-width: 620px; margin: 0 auto;
+    }
+    .pain-before { color: var(--text-muted); font-size: 15px; }
+    .pain-after { color: var(--blue); font-weight: 700; font-size: 15px; }
+
+    /* ── REJECT ── */
+    .reject-section { background: var(--navy); color: white; text-align: center; }
+    .reject-title { font-size: clamp(24px, 5.5vw, 30px); font-weight: 900; line-height: 1.4; margin-bottom: 0.6rem; }
+    .reject-title .acc { color: var(--orange); }
+    .reject-desc { font-size: 16px; opacity: 0.9; line-height: 2.0; margin-bottom: 2rem; }
+    .reject-badges {
+      display: flex; flex-wrap: wrap;
+      justify-content: center; gap: 12px; margin-bottom: 2rem;
+      max-width: 560px; margin-left: auto; margin-right: auto;
+    }
+    .rej-badge {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: white; font-size: 15px; font-weight: 700;
+      padding: 15px 22px; border-radius: 10px; line-height: 1.4;
+      flex: 1; min-width: 200px;
+    }
+    .rej-badge span { display: block; font-size: 13px; font-weight: 400; opacity: 0.78; margin-top: 6px; }
+    .stats-row { display: flex; justify-content: center; gap: 2.5rem; flex-wrap: wrap; }
+    .stat-num { font-size: 34px; font-weight: 900; color: var(--orange); }
+    .stat-label { font-size: 14px; opacity: 0.8; margin-top: 5px; }
+
+    /* ── STEPS ── */
+    .steps-section { background: var(--white); }
+    .steps { max-width: 500px; margin: 0 auto; }
+    .step {
+      display: flex; gap: 16px; text-align: left;
+      padding: 1.4rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .step:last-child { border-bottom: none; }
+    .step-num {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--navy); color: white;
+      font-size: 15px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 2px;
+    }
+    .step-title { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
+    .step-desc { font-size: 15px; color: var(--text-muted); line-height: 1.85; }
+
+    /* ── SEMINAR ── */
+    .seminar-section { background: var(--bg); }
+    .seminar-card {
+      max-width: 500px; margin: 0 auto;
+      background: var(--card-bg);
+      border: 2px solid var(--blue);
+      border-radius: var(--radius-lg);
+      padding: 2rem 1.75rem;
+    }
+    .seminar-tag {
+      display: inline-block; background: var(--orange);
+      color: white; font-size: 13px; font-weight: 700;
+      padding: 6px 16px; border-radius: 20px;
+      margin-bottom: 1rem; letter-spacing: 1px;
+    }
+    .seminar-title { font-size: 22px; font-weight: 900; margin-bottom: 0.75rem; line-height: 1.45; }
+    .seminar-desc { font-size: 16px; color: var(--text-muted); line-height: 1.9; margin-bottom: 1.5rem; }
+    .seminar-features {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 8px; margin-bottom: 1.75rem; text-align: left;
+    }
+    .sf {
+      display: flex; align-items: flex-start;
+      gap: 8px; font-size: 14px; color: var(--text-muted);
+    }
+    .sf::before { content: '✓'; color: var(--blue); font-weight: 700; font-size: 15px; flex-shrink: 0; }
+    .seminar-cta {
+      width: 100%; background: var(--navy);
+      color: white; font-size: 17px; font-weight: 700;
+      padding: 16px; border-radius: 50px;
+      border: none; cursor: pointer;
+      font-family: 'Noto Sans KR', sans-serif;
+      transition: background 0.15s;
+    }
+    .seminar-cta:hover { background: var(--blue); }
+
+    /* ── CONTACT ── */
+    .contact-section { background: var(--white); text-align: center; padding: 2.5rem 1.5rem; }
+    .agent-row {
+      display: flex; align-items: center;
+      justify-content: center; gap: 1rem; margin-bottom: 1.25rem;
+    }
+    .agent-photo {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: #e5e7eb;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .agent-photo img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center top;
+    }
+    .agent-name { font-size: 20px; font-weight: 700; text-align: left; }
+    .agent-name span { font-size: 15px; font-weight: 400; color: var(--text-muted); }
+    .agent-nmls { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+    .contact-phone { font-size: 32px; font-weight: 900; color: var(--navy); margin-bottom: 1rem; letter-spacing: 1px; }
+    .contact-links { display: flex; flex-direction: column; gap: 8px; font-size: 15px; color: var(--text-muted); align-items: center; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navy); color: rgba(255,255,255,0.55);
+      font-size: 13px; text-align: center; padding: 1.5rem;
+    }
+
+    /* ── PAIN POPUP ── */
+    .overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.58); z-index: 900;
+      align-items: center; justify-content: center;
+      padding: 1.25rem;
+    }
+    .overlay.active { display: flex; }
+    .popup {
+      background: var(--card-bg);
+      border-radius: 20px;
+      width: 100%; max-width: 440px;
+      padding: 2rem 1.75rem;
+      position: relative;
+      max-height: 90vh; overflow-y: auto;
+      animation: popIn 0.2s ease;
+    }
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.94) translateY(10px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .popup-close {
+      position: absolute; top: 14px; right: 14px;
+      background: var(--bg); border: none;
+      width: 30px; height: 30px; border-radius: 50%;
+      font-size: 14px; cursor: pointer; color: var(--text-muted);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .popup-close:hover { background: #e5e7eb; }
+    .popup-icon { font-size: 48px; margin-bottom: 1rem; display: block; text-align: center; }
+    .popup-q {
+      font-size: 20px; font-weight: 900; line-height: 1.45;
+      margin-bottom: 1.25rem; text-align: center; white-space: pre-line;
+    }
+    .popup-divider {
+      height: 3px;
+      background: linear-gradient(90deg, var(--navy), var(--blue-light));
+      border-radius: 3px; margin-bottom: 1rem;
+    }
+    .popup-answer { font-size: 16px; line-height: 2.0; color: var(--text-muted); }
+    .popup-answer strong { color: var(--text); font-weight: 700; }
+    .popup-tip {
+      margin-top: 1rem;
+      background: #fff8ee;
+      border-left: 3px solid var(--orange);
+      border-radius: 0 8px 8px 0;
+      padding: 0.85rem 1rem;
+      font-size: 15px; color: var(--text-muted); line-height: 1.85;
+    }
+    .popup-tip strong { color: var(--blue); }
+    .popup-cta {
+      width: 100%; background: var(--navy);
+      color: white; font-size: 16px; font-weight: 700;
+      padding: 15px; border-radius: 50px;
+      border: none; cursor: pointer;
+      font-family: 'Noto Sans KR', sans-serif;
+      margin-top: 1.25rem; transition: background 0.15s;
+    }
+    .popup-cta:hover { background: var(--blue); }
+
+    /* ── SEMINAR POPUP ── */
+    .sem-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.6); z-index: 1000;
+      align-items: center; justify-content: center;
+      padding: 1rem;
+    }
+    .sem-overlay.active { display: flex; }
+    .sem-popup {
+      background: var(--card-bg);
+      border-radius: 20px;
+      width: 100%; max-width: 500px;
+      padding: 2rem 1.75rem;
+      position: relative;
+      max-height: 94vh; overflow-y: auto;
+      animation: popIn 0.2s ease;
+    }
+    .sem-popup .popup-close { position: absolute; top: 14px; right: 14px; }
+    .popup-title { font-size: 22px; font-weight: 900; margin-bottom: 0.5rem; }
+    .popup-sub { font-size: 15px; color: var(--text-muted); margin-bottom: 1.75rem; line-height: 1.75; }
+    .form-group { margin-bottom: 1rem; }
+    .form-label {
+      font-size: 14px; font-weight: 700;
+      color: var(--text-muted); display: block;
+      margin-bottom: 7px; letter-spacing: 0.3px;
+    }
+    .form-label .req { color: #e53e3e; }
+    .form-input, .form-select, .form-textarea {
+      width: 100%; padding: 13px 15px;
+      border: 1px solid #d1d5db;
+      border-radius: var(--radius);
+      font-size: 16px; font-family: 'Noto Sans KR', sans-serif;
+      background: white; color: var(--text);
+      outline: none; transition: border-color 0.15s;
+      appearance: auto;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(26,74,138,0.12);
+    }
+    .form-textarea { resize: vertical; min-height: 76px; }
+    .date-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .submit-btn {
+      width: 100%; background: var(--navy);
+      color: white; font-size: 17px; font-weight: 700;
+      padding: 16px; border-radius: 50px;
+      border: none; cursor: pointer;
+      font-family: 'Noto Sans KR', sans-serif;
+      margin-top: 0.75rem; transition: background 0.15s;
+    }
+    .submit-btn:hover { background: var(--blue); }
+    .submit-btn:disabled { background: #9ca3af; cursor: not-allowed; }
+    .form-notice {
+      font-size: 13px; color: var(--text-muted);
+      text-align: center; margin-top: 1rem; line-height: 1.7;
+    }
+    .err-msg { font-size: 14px; color: #e53e3e; margin-bottom: 0.75rem; display: none; }
+    .success-area { text-align: center; padding: 1.5rem 0; display: none; }
+    .success-icon { font-size: 56px; margin-bottom: 1.25rem; display: block; }
+    .success-title { font-size: 22px; font-weight: 900; margin-bottom: 0.75rem; color: var(--navy); }
+    .success-desc { font-size: 13px; color: var(--text-muted); line-height: 1.7; }
+    .success-close {
+      margin-top: 1.5rem; background: var(--navy);
+      color: white; border: none;
+      padding: 13px 34px; border-radius: 50px;
+      cursor: pointer; font-size: 16px; font-weight: 700;
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+
+    @media (max-width: 480px) {
+      .seminar-features { grid-template-columns: 1fr; }
+      .date-row { grid-template-columns: 1fr; }
+      .reject-badges { flex-direction: column; }
+      .rej-badge { min-width: unset; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="logo-wrap">
+    <div class="logo-icon-block">
+      <img src="logo.png" alt="DoDream Mortgage Logo">
+    </div>
+    <div class="logo-divider"></div>
+    <div class="logo-text-block">
+      <div class="logo-tagline">꿈을 이뤄드리는 &nbsp;<strong>두드림 모기지</strong></div>
+      <div class="logo-name">DoDream Mortgage</div>
+      <div class="logo-sub">Open the Door to Your Dream Home</div>
+    </div>
+  </div>
+
+  <div class="door-wrap">
+    <div class="door-bg"></div>
+    <div class="door-glow"></div>
+    <div class="door-panel"><div class="door-knob"></div></div>
+    <div class="door-frame"></div>
+  </div>
+
+  <h1 class="hero-headline">모기지, <span class="acc">어렵지 않습니다.</span><br>두드리면 열립니다.</h1>
+  <p class="hero-sub">처음 집을 사는 게 막막하신가요?<br>복잡한 서류, 낯선 용어, 어디서 시작할지 모르는 막막함—<br>저희가 처음부터 끝까지 함께합니다.</p>
+  <button class="hero-cta" onclick="openSeminar()">무료 1:1 세미나 신청하기 →</button>
+  <div class="badge-row">
+    <span class="badge">첫 집 구매 전문</span>
+    <span class="badge">NMLS: 1209440</span>
+    <span class="badge">한국어 상담 가능</span>
+  </div>
+</section>
+
+<!-- ── MAGIC RATE ── -->
+<section class="magic-section">
+  <div class="section-label">✨ 두드림 특별 혜택</div>
+  <h2 class="section-title">주변 사람들보다<br><span style="color:var(--blue);">더 낮은 이자율</span>로 집 사는<br>마법 같은 방법</h2>
+  <div class="magic-card">
+    <div class="magic-headline">왜 두드림 모기지가<br><span class="acc">이자율이 더 낮을까요?</span></div>
+    <ul class="magic-list">
+      <li>수십 개의 렌더(대출기관)를 한 번에 비교해 가장 낮은 이자율을 찾아드립니다. 은행은 자기 상품만 팔지만, 저희는 여러분 편입니다.</li>
+      <li>크레딧 점수를 올리는 전략적 타이밍 컨설팅으로 신청 전 이자율을 낮춥니다.</li>
+      <li>포인트 바이다운(Rate Buydown) 전략으로 장기적으로 수십만 달러를 절약하는 방법을 안내합니다.</li>
+      <li>첫 집 구매자 특별 프로그램 — 정부 지원 론(FHA, USDA, VA)으로 시중보다 낮은 금리 혜택을 받을 수 있습니다.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ── PAIN CARDS ── -->
+<section class="pain-section">
+  <div class="section-label">이런 걱정 있으시죠?</div>
+  <h2 class="section-title">처음이라 모든 게<br>낯설고 두렵습니다</h2>
+  <p class="section-hint">궁금한 항목을 눌러보세요 👇</p>
+
+  <div class="pain-cards">
+    <div class="pain-card" onclick="openCard(0)">
+      <span class="pain-icon">📄</span>
+      <div class="pain-text">서류가 너무 많아서 뭘 준비해야 할지 모르겠어요</div>
+      <div class="tap-hint">탭해서 알아보기 →</div>
+    </div>
+    <div class="pain-card" onclick="openCard(1)">
+      <span class="pain-icon">🏦</span>
+      <div class="pain-text">은행에서 거절당한 적 있어서 또 신청하기 두렵습니다</div>
+      <div class="tap-hint">탭해서 알아보기 →</div>
+    </div>
+    <div class="pain-card" onclick="openCard(2)">
+      <span class="pain-icon">💸</span>
+      <div class="pain-text">다운페이가 얼마나 있어야 집을 살 수 있는지 몰라요</div>
+      <div class="tap-hint">탭해서 알아보기 →</div>
+    </div>
+    <div class="pain-card" onclick="openCard(3)">
+      <span class="pain-icon">🤯</span>
+      <div class="pain-text">Rate, APR, PMI... 용어가 너무 어렵습니다</div>
+      <div class="tap-hint">탭해서 알아보기 →</div>
+    </div>
+    <div class="pain-card" onclick="openCard(4)">
+      <span class="pain-icon">✅</span>
+      <div class="pain-text">Pre-Approval이 필요해요</div>
+      <div class="tap-hint">탭해서 알아보기 →</div>
+    </div>
+    <div class="pain-card" onclick="openCard(5)">
+      <span class="pain-icon">🤔</span>
+      <div class="pain-text">집 사기 vs 집 렌트, 뭐가 더 이득일까요?</div>
+      <div class="tap-hint">탭해서 알아보기 →</div>
+    </div>
+    <div class="pain-card" onclick="openCard(6)">
+      <span class="pain-icon">📉</span>
+      <div class="pain-text">집이 있는데 이자율을 낮추고 싶어요</div>
+      <div class="tap-hint">탭해서 알아보기 →</div>
+    </div>
+    <div class="pain-card" onclick="openCard(7)">
+      <span class="pain-icon">💼</span>
+      <div class="pain-text">자영업자인데 모기지가 가능할까요?</div>
+      <div class="tap-hint">탭해서 알아보기 →</div>
+    </div>
+  </div>
+
+  <div class="pain-arrow">
+    <span class="pain-before">걱정 → 혼란 → 포기?</span>
+    <span style="color:var(--orange);font-size:18px;font-weight:700;">→</span>
+    <span class="pain-after">두드림과 함께라면 OK</span>
+  </div>
+</section>
+
+<!-- ── REJECT / HARD LOANS ── -->
+<section class="reject-section">
+  <h2 class="reject-title">대형 은행에서 거절당해도<br><span class="acc">포기하지 마세요</span></h2>
+  <p class="reject-desc">두드림 모기지는 다양한 론 옵션과 네트워크를 통해<br>여러분의 상황에 맞는 해결책을 찾아드립니다.</p>
+  <div class="reject-badges">
+    <div class="rej-badge">
+      어려운 융자도 도와드립니다
+      <span>복잡한 상황, 낮은 크레딧, 자영업자 모두 OK</span>
+    </div>
+    <div class="rej-badge">
+      세금보고 없이 융자받는 방법도 있습니다
+      <span>Bank Statement · No-Doc · DSCR 등 다양한 옵션</span>
+    </div>
+  </div>
+  <div class="stats-row">
+    <div class="stat"><div class="stat-num">3.5%</div><div class="stat-label">FHA 최소 다운페이</div></div>
+    <div class="stat"><div class="stat-num">0%</div><div class="stat-label">USDA/VA 다운페이</div></div>
+    <div class="stat"><div class="stat-num">580+</div><div class="stat-label">FHA 최소 크레딧</div></div>
+  </div>
+</section>
+
+<!-- ── STEPS ── -->
+<section class="steps-section">
+  <div class="section-label">이렇게 도와드립니다</div>
+  <h2 class="section-title">3단계로<br>첫 집 문이 열립니다</h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div>
+        <div class="step-title">문을 두드리세요 — 무료 상담</div>
+        <div class="step-desc">어떤 질문이든 OK입니다. 재정 상태, 크레딧, 다운페이 — 부담 없이 이야기해 주세요.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div>
+        <div class="step-title">나에게 맞는 론 찾기</div>
+        <div class="step-desc">FHA, Conventional, Bank Statement 등 수십 가지 옵션 중 가장 유리한 조건을 찾아드립니다.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div>
+        <div class="step-title">내 집 문을 엽니다</div>
+        <div class="step-desc">서류 준비부터 클로징까지, 모든 과정을 한국어로 안내해 드립니다.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SEMINAR ── -->
+<section class="seminar-section">
+  <div class="section-label">무료 이벤트</div>
+  <h2 class="section-title">내 집 마련하기<br>1:1 세미나</h2>
+  <div class="seminar-card">
+    <div class="seminar-tag">FREE · 한국어 진행</div>
+    <div class="seminar-title">처음 집 사는 분들을 위한<br>모기지 완전 정복</div>
+    <p class="seminar-desc">어려운 용어 없이, 쉽고 친절하게.<br>내 상황에 맞는 론 옵션을 1:1로 알려드립니다.</p>
+    <div class="seminar-features">
+      <div class="sf">모기지 기초 용어 설명</div>
+      <div class="sf">크레딧 올리는 방법</div>
+      <div class="sf">다운페이 준비 전략</div>
+      <div class="sf">서류 준비 체크리스트</div>
+      <div class="sf">낮은 이자율 받는 비결</div>
+      <div class="sf">현재 금리 분석</div>
+    </div>
+    <button class="seminar-cta" onclick="openSeminar()">무료 세미나 신청하기 →</button>
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
+<section class="contact-section">
+  <div class="agent-row">
+    <div class="agent-photo"><img src="richard_park.png" alt="리차드 박 Richard Park"></div>
+    <div>
+      <div class="agent-name">리차드 박 <span>Richard Park</span></div>
+      <div class="agent-nmls">NMLS: 1209440</div>
+    </div>
+  </div>
+  <div class="contact-phone">945-216-0051</div>
+  <div class="contact-links">
+    <span>✉ dodreammortgage@gmail.com</span>
+    <span>📍 4400 State HWY 121 Suite 300-389</span>
+    <span>🌐 www.dodreammortgage.com</span>
+  </div>
+</section>
+
+<footer>
+  Copyright 2025 DoDream Mortgage · AjooProjects.com All rights reserved.
+</footer>
+
+
+<!-- ══ PAIN CARD POPUP ══ -->
+<div class="overlay" id="cardOverlay" onclick="handleCardOverlay(event)">
+  <div class="popup" id="cardPopup">
+    <button class="popup-close" onclick="closeCard()">✕</button>
+    <span class="popup-icon" id="pIcon"></span>
+    <div class="popup-q" id="pQ"></div>
+    <div class="popup-divider"></div>
+    <div class="popup-answer" id="pA"></div>
+    <div class="popup-tip" id="pTip"></div>
+    <button class="popup-cta" onclick="closeCard(); openSeminar()">무료 1:1 상담 신청하기 →</button>
+  </div>
+</div>
+
+
+<!-- ══ SEMINAR SIGNUP POPUP ══ -->
+<div class="sem-overlay" id="semOverlay" onclick="handleSemOverlay(event)">
+  <div class="sem-popup">
+    <button class="popup-close" onclick="closeSeminar()">✕</button>
+
+    <div id="semForm">
+      <div style="font-size:26px;margin-bottom:0.5rem;text-align:center;">🚪</div>
+      <div class="popup-title">무료 1:1 세미나 신청</div>
+      <p class="popup-sub">내 집 마련하기 · 두드림 모기지<br>아래 내용을 입력하시면 확인 이메일을 보내드립니다.</p>
+
+      <div class="form-group">
+        <label class="form-label">희망 날짜 &amp; 시간 <span class="req">*</span></label>
+        <div class="date-row">
+          <input type="date" class="form-input" id="apptDate">
+          <select class="form-select" id="apptTime">
+            <option value="">시간 선택</option>
+            <option>오전 9:00</option>
+            <option>오전 10:00</option>
+            <option>오전 11:00</option>
+            <option>오후 12:00</option>
+            <option>오후 1:00</option>
+            <option>오후 2:00</option>
+            <option>오후 3:00</option>
+            <option>오후 4:00</option>
+            <option>오후 5:00</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">이름 <span class="req">*</span></label>
+        <input type="text" class="form-input" id="userName" placeholder="홍길동">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">전화번호 <span class="req">*</span></label>
+        <input type="tel" class="form-input" id="userPhone" placeholder="(000) 000-0000">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">이메일 <span class="req">*</span></label>
+        <input type="email" class="form-input" id="userEmail" placeholder="example@email.com">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">궁금한 주제 <span class="req">*</span></label>
+        <select class="form-select" id="userTopic">
+          <option value="">주제를 선택해 주세요</option>
+          <option>첫 집 장만이라 도움이 필요해요</option>
+          <option>낮은 이자율을 찾고 있어요</option>
+          <option>나에게 맞는 주택/커머셜 론을 찾고 있어요</option>
+          <option>재정 상담을 받고 싶어요</option>
+          <option>부동산 브로커입니다. 협업 논의하고 싶어요</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">간단한 메모</label>
+        <textarea class="form-textarea" id="userNote" placeholder="궁금한 점이나 현재 상황을 간략히 적어주세요 (선택사항)"></textarea>
+      </div>
+
+      <div class="err-msg" id="errMsg"></div>
+      <button class="submit-btn" id="submitBtn" onclick="submitForm()">신청서 제출하기 →</button>
+      <p class="form-notice">
+        제출하시면 확인 이메일이 dodreammortgage@gmail.com 으로 전송되며,<br>
+        신청하신 이메일 주소로도 사본이 발송됩니다.
+      </p>
+    </div>
+
+    <div class="success-area" id="semSuccess">
+      <span class="success-icon">🎉</span>
+      <div class="success-title">신청이 완료되었습니다!</div>
+      <p class="success-desc">확인 이메일을 보내드렸습니다.<br>리차드 박이 빠른 시일 내에 연락드립니다.<br><br><strong>두드림 모기지 · 945-216-0051</strong></p>
+      <button class="success-close" onclick="closeSeminar()">닫기</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  /* ── PAIN CARD DATA ── */
+  const cards = [
+    {
+      icon: '📄',
+      q: '서류가 너무 많아서\n뭘 준비해야 할지 모르겠어요',
+      a: '기본적으로 필요한 서류는 <strong>신분증, 최근 2년치 세금보고(W-2), 최근 30일 페이스텁, 최근 2~3개월 은행 잔고증명</strong> 정도입니다. 생각보다 많지 않아요! 상황에 따라 추가 서류가 다를 수 있지만, 처음부터 하나씩 함께 체크해 드립니다.',
+      tip: '💡 <strong>두드림 팁:</strong> 서류 준비 체크리스트를 무료로 드립니다. 세미나에서 바로 확인하세요!'
+    },
+    {
+      icon: '🏦',
+      q: '은행에서 거절당한 적 있어서\n또 신청하기 두렵습니다',
+      a: '은행은 자기 기준에 맞지 않으면 무조건 거절합니다. 하지만 모기지 브로커는 <strong>수십 개의 렌더(대출기관)를 한 번에 비교</strong>하기 때문에 한 곳에서 거절당해도 다른 옵션이 있습니다. 크레딧이 낮거나, 세금보고가 적거나, 자영업자여도 맞는 프로그램이 분명 있습니다.',
+      tip: '💡 <strong>두드림 팁:</strong> 거절 이유를 분석하면 해결책이 보입니다. 먼저 무료 상담으로 원인을 파악해 보세요.'
+    },
+    {
+      icon: '💸',
+      q: '다운페이가 얼마나 있어야\n집을 살 수 있는지 몰라요',
+      a: '생각보다 적어도 됩니다! <strong>FHA 론은 3.5%</strong>부터 가능하고, <strong>VA(군인)·USDA(농촌지역) 론은 0%</strong>도 가능합니다. 집값 $400,000 기준 FHA라면 $14,000만 있어도 시작할 수 있어요. 다운페이 지원 프로그램(DPA)도 있습니다.',
+      tip: '💡 <strong>두드림 팁:</strong> 다운페이가 부족해도 방법이 있습니다. 세미나에서 내 상황에 맞는 옵션을 바로 확인해 드려요.'
+    },
+    {
+      icon: '🤯',
+      q: 'Rate, APR, PMI...\n용어가 너무 어렵습니다',
+      a: '<strong>Rate(금리)</strong>는 이자율, <strong>APR</strong>은 수수료 포함 실제 비용, <strong>PMI</strong>는 다운페이 20% 미만 시 내는 보험료입니다. 쉽게 말해 Rate는 "월 이자", APR은 "진짜 총 비용", PMI는 "다운페이 적으면 내는 추가 보험"이라고 생각하면 됩니다.',
+      tip: '💡 <strong>두드림 팁:</strong> 세미나에서 자주 쓰는 모기지 용어 10개를 10분 만에 완전 정복할 수 있습니다!'
+    },
+    {
+      icon: '✅',
+      q: 'Pre-Approval이 필요해요',
+      a: 'Pre-Approval은 <strong>"이 사람은 이 금액까지 빌릴 수 있다"는 공식 확인서</strong>입니다. 집을 보러 가거나 오퍼를 넣기 전에 꼭 필요하고, 셀러에게 진지한 바이어라는 신뢰를 줍니다. 보통 <strong>1~3일</strong> 안에 받을 수 있으며, 무료입니다.',
+      tip: '💡 <strong>두드림 팁:</strong> Pre-Approval 전에 크레딧을 점검하면 더 좋은 조건을 받을 수 있어요. 순서가 중요합니다!'
+    },
+    {
+      icon: '🤔',
+      q: '집 사기 vs 집 렌트,\n뭐가 더 이득일까요?',
+      a: '렌트는 매달 돈이 나가고 아무것도 남지 않습니다. 반면 모기지는 매달 내는 돈이 <strong>내 자산(Equity)</strong>으로 쌓입니다. 월 페이먼트가 비슷하다면 사는 게 대부분 유리합니다. 물론 거주 기간, 지역, 재정 상황에 따라 다르므로 1:1 계산을 해보는 게 가장 정확합니다.',
+      tip: '💡 <strong>두드림 팁:</strong> 세미나에서 내 상황에 맞는 "사기 vs 렌트" 손익 계산을 직접 해드립니다!'
+    },
+    {
+      icon: '📉',
+      q: '집이 있는데\n이자율을 낮추고 싶어요',
+      a: '이걸 <strong>Refinance(재융자)</strong>라고 합니다. 현재보다 금리가 낮아졌거나, 크레딧이 올랐거나, 고정금리로 바꾸고 싶을 때 합니다. 월 페이먼트를 줄이거나, 집에 쌓인 <strong>Equity를 현금으로 꺼내는(Cash-Out Refi)</strong> 것도 가능합니다.',
+      tip: '💡 <strong>두드림 팁:</strong> 현재 이자율과 비교해 Refinance가 유리한지 무료로 분석해 드립니다.'
+    },
+    {
+      icon: '💼',
+      q: '자영업자인데\n모기지가 가능할까요?',
+      a: '가능합니다! 세금보고 소득이 적어도 <strong>Bank Statement Loan(은행 입출금 내역 기반)</strong>이나 <strong>No-Doc Loan</strong> 같은 특별 프로그램이 있습니다. 최근 12~24개월 은행 내역만으로도 소득을 증명할 수 있어요. 자영업자 전용 옵션이 생각보다 많습니다.',
+      tip: '💡 <strong>두드림 팁:</strong> 세금보고 없이도 융자받는 방법, 세미나에서 내 상황에 맞게 바로 알려드립니다!'
+    }
+  ];
+
+  /* ── PAIN CARD POPUP ── */
+  function openCard(i) {
+    const c = cards[i];
+    document.getElementById('pIcon').textContent = c.icon;
+    document.getElementById('pQ').textContent = c.q;
+    document.getElementById('pA').innerHTML = c.a;
+    document.getElementById('pTip').innerHTML = c.tip;
+    document.getElementById('cardOverlay').classList.add('active');
+  }
+  function closeCard() {
+    document.getElementById('cardOverlay').classList.remove('active');
+  }
+  function handleCardOverlay(e) {
+    if (e.target === document.getElementById('cardOverlay')) closeCard();
+  }
+
+  /* ── SEMINAR POPUP ── */
+  function getMinDate() {
+    const d = new Date();
+    d.setDate(d.getDate() + 2);
+    return d.toISOString().split('T')[0];
+  }
+
+  function openSeminar() {
+    document.getElementById('apptDate').min = getMinDate();
+    document.getElementById('semForm').style.display = 'block';
+    document.getElementById('semSuccess').style.display = 'none';
+    document.getElementById('submitBtn').disabled = false;
+    document.getElementById('submitBtn').textContent = '신청서 제출하기 →';
+    document.getElementById('errMsg').style.display = 'none';
+    document.getElementById('semOverlay').classList.add('active');
+  }
+  function closeSeminar() {
+    document.getElementById('semOverlay').classList.remove('active');
+  }
+  function handleSemOverlay(e) {
+    if (e.target === document.getElementById('semOverlay')) closeSeminar();
+  }
+
+  function validate() {
+    const date  = document.getElementById('apptDate').value;
+    const time  = document.getElementById('apptTime').value;
+    const name  = document.getElementById('userName').value.trim();
+    const phone = document.getElementById('userPhone').value.trim();
+    const email = document.getElementById('userEmail').value.trim();
+    const topic = document.getElementById('userTopic').value;
+    if (!date || !time)         return '희망 날짜와 시간을 선택해 주세요.';
+    if (date < getMinDate())    return '예약은 오늘로부터 2일 후부터 가능합니다.';
+    if (!name)                  return '이름을 입력해 주세요.';
+    if (!phone)                 return '전화번호를 입력해 주세요.';
+    if (!email || !email.includes('@')) return '올바른 이메일 주소를 입력해 주세요.';
+    if (!topic)                 return '궁금한 주제를 선택해 주세요.';
+    return null;
+  }
+
+  // ================================================================
+  // Google Apps Script 웹 앱 URL — Deploy 후 아래 URL 교체하세요
+  // ================================================================
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzAb8Dmf9JMN16tjlcvIGqu5-Vx1NYtpse3Fjw_RTYSOc9yZ3jMmateKRXYJsgUQS8y/exec';
+
+  function submitForm() {
+    const err = validate();
+    const errEl = document.getElementById('errMsg');
+    if (err) { errEl.textContent = err; errEl.style.display = 'block'; return; }
+    errEl.style.display = 'none';
+
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = '전송 중...';
+
+    const payload = {
+      user_name:  document.getElementById('userName').value.trim(),
+      user_phone: document.getElementById('userPhone').value.trim(),
+      user_email: document.getElementById('userEmail').value.trim(),
+      appt_date:  document.getElementById('apptDate').value,
+      appt_time:  document.getElementById('apptTime').value,
+      user_topic: document.getElementById('userTopic').value,
+      user_note:  document.getElementById('userNote').value.trim()
+    };
+
+    fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+    .then(() => {
+      document.getElementById('semForm').style.display = 'none';
+      document.getElementById('semSuccess').style.display = 'block';
+    })
+    .catch(() => {
+      btn.disabled = false;
+      btn.textContent = '신청서 제출하기 →';
+      errEl.textContent = '전송 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.';
+      errEl.style.display = 'block';
+    });
+  }
+</script>
+</body>
+</html>
