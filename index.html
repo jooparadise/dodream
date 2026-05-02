@@ -1,0 +1,2054 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>두드림 모기지 | 모기지 어렵지 않습니다. 두드리면 열립니다.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --navy: #0B2D5E;
+      --blue: #1A4A8A;
+      --blue-light: #2563B8;
+      --orange: #FFA500;
+      --white: #ffffff;
+      --bg: #f5f6f8;
+      --card-bg: #ffffff;
+      --text: #1a1a2e;
+      --text-muted: #6b7280;
+      --border: rgba(0,0,0,0.1);
+      --radius: 12px;
+      --radius-lg: 16px;
+    }
+
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      color: var(--text);
+      background: var(--white);
+      overflow-x: hidden;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, #0B2D5E 0%, #1A4A8A 55%, #2563B8 100%);
+      color: white;
+      padding: 2.5rem 1.5rem 3.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 280px; height: 280px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; left: -60px;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: rgba(255,165,0,0.08);
+    }
+
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      margin-bottom: 2.25rem;
+      position: relative;
+      z-index: 1;
+    }
+    .logo-icon-block {
+      display: flex;
+      align-items: center;
+      padding-right: 18px;
+    }
+    .logo-icon-block img {
+      width: 64px;
+      height: 64px;
+      object-fit: contain;
+      border-radius: 10px;
+    }
+    .logo-divider {
+      width: 1px;
+      height: 56px;
+      background: rgba(255,255,255,0.25);
+      margin-right: 18px;
+      flex-shrink: 0;
+    }
+    .logo-text-block {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 3px;
+      text-align: left;
+    }
+    .logo-tagline {
+      font-size: 12px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.65);
+      letter-spacing: 2.5px;
+      line-height: 1;
+    }
+    .logo-tagline strong {
+      font-weight: 900;
+      color: var(--orange);
+    }
+    .logo-name {
+      font-size: 22px;
+      font-weight: 900;
+      color: white;
+      line-height: 1.15;
+    }
+    .logo-sub {
+      font-size: 12px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.6);
+      letter-spacing: 0.5px;
+      margin-top: 1px;
+    }
+
+    /* DOOR ANIMATION */
+    .door-wrap {
+      width: 90px; height: 110px;
+      margin: 0 auto 1.75rem;
+      position: relative;
+      perspective: 500px;
+      z-index: 1;
+    }
+    .door-frame {
+      width: 90px; height: 110px;
+      border: 4px solid rgba(255,255,255,0.4);
+      border-radius: 6px 6px 0 0;
+      position: absolute; top: 0; left: 0; z-index: 3;
+      pointer-events: none;
+    }
+    .door-bg {
+      width: 82px; height: 102px;
+      position: absolute; top: 4px; left: 4px;
+      background: linear-gradient(135deg, #fff9e6, #fffbe8);
+      border-radius: 3px 3px 0 0;
+      z-index: 1;
+    }
+    .door-glow {
+      position: absolute; top: 4px; left: -16px;
+      width: 36px; height: 102px;
+      background: linear-gradient(90deg, transparent, rgba(255,220,100,0.35), transparent);
+      z-index: 2;
+      opacity: 0;
+      animation: glowSweep 4s ease-in-out infinite;
+    }
+    .door-panel {
+      width: 82px; height: 102px;
+      background: linear-gradient(135deg, #1e5fa8, #2a7de1);
+      border-radius: 3px 3px 0 0;
+      position: absolute; top: 4px; left: 4px;
+      transform-origin: left center;
+      transform-style: preserve-3d;
+      animation: doorKnock 4s ease-in-out infinite;
+      z-index: 4;
+    }
+    .door-panel::before {
+      content: '';
+      position: absolute;
+      top: 20%; left: 15%; right: 15%; bottom: 20%;
+      border: 1.5px solid rgba(255,255,255,0.2);
+      border-radius: 3px;
+    }
+    .door-knob {
+      width: 11px; height: 11px;
+      background: var(--orange);
+      border-radius: 50%;
+      position: absolute;
+      right: 11px; top: 50%;
+      transform: translateY(-50%);
+      box-shadow: 0 0 8px rgba(255,165,0,0.7);
+    }
+    @keyframes doorKnock {
+      0%   { transform: rotateY(0deg); }
+      8%   { transform: rotateY(-18deg); }
+      16%  { transform: rotateY(0deg); }
+      26%  { transform: rotateY(-11deg); }
+      34%  { transform: rotateY(0deg); }
+      50%  { transform: rotateY(0deg); }
+      72%  { transform: rotateY(-78deg); }
+      86%  { transform: rotateY(-78deg); }
+      98%  { transform: rotateY(0deg); }
+      100% { transform: rotateY(0deg); }
+    }
+    @keyframes glowSweep {
+      0%   { opacity: 0; left: -16px; }
+      50%  { opacity: 0; left: -16px; }
+      62%  { opacity: 1; left: 30px; }
+      80%  { opacity: 0; left: 86px; }
+      100% { opacity: 0; }
+    }
+
+    .hero-headline {
+      font-size: clamp(28px, 7vw, 36px);
+      font-weight: 900;
+      line-height: 1.35;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.5px;
+      position: relative; z-index: 1;
+    }
+    .hero-headline .acc { color: var(--orange); }
+    .hero-sub {
+      font-size: 17px;
+      opacity: 0.9;
+      line-height: 2.0;
+      margin-bottom: 2rem;
+      max-width: 400px;
+      margin-left: auto; margin-right: auto;
+      position: relative; z-index: 1;
+    }
+    .hero-cta {
+      display: inline-block;
+      background: var(--orange);
+      color: white;
+      font-size: 17px; font-weight: 700;
+      padding: 16px 38px;
+      border-radius: 50px;
+      border: none; cursor: pointer;
+      font-family: 'Noto Sans KR', sans-serif;
+      box-shadow: 0 4px 20px rgba(255,165,0,0.45);
+      transition: transform 0.15s, box-shadow 0.15s;
+      position: relative; z-index: 1;
+      text-decoration: none;
+    }
+    .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 6px 26px rgba(255,165,0,0.55); }
+    .badge-row {
+      display: flex; justify-content: center;
+      gap: 8px; margin-top: 1.5rem;
+      flex-wrap: wrap; position: relative; z-index: 1;
+    }
+    .badge {
+      background: rgba(255,255,255,0.13);
+      border: 1px solid rgba(255,255,255,0.28);
+      color: white; font-size: 13px;
+      padding: 6px 14px; border-radius: 20px;
+    }
+
+    /* ── SECTIONS COMMON ── */
+    section { padding: 3.5rem 1.75rem; }
+    .section-label {
+      font-size: 13px; font-weight: 700;
+      color: var(--blue); letter-spacing: 2px;
+      text-transform: uppercase; margin-bottom: 0.4rem;
+      text-align: center;
+    }
+    .section-title {
+      font-size: clamp(22px, 5vw, 28px);
+      font-weight: 900; line-height: 1.4;
+      margin-bottom: 1.5rem; text-align: center;
+    }
+
+    /* ── MAGIC RATE ── */
+    .magic-section { background: var(--white); }
+    .magic-card {
+      max-width: 560px; margin: 0 auto;
+      background: linear-gradient(135deg, #0B2D5E, #1A4A8A);
+      border-radius: var(--radius-lg);
+      padding: 2rem 1.75rem;
+      color: white;
+      position: relative; overflow: hidden;
+    }
+    .magic-card::after {
+      content: '✨';
+      position: absolute;
+      top: 14px; right: 18px;
+      font-size: 30px; opacity: 0.4;
+    }
+    .magic-headline {
+      font-size: 20px; font-weight: 900;
+      margin-bottom: 1.25rem; line-height: 1.5;
+    }
+    .magic-headline .acc { color: var(--orange); }
+    .magic-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .magic-list li {
+      font-size: 16px; line-height: 1.85;
+      display: flex; gap: 12px; align-items: flex-start;
+    }
+    .magic-list li::before { content: '★'; color: var(--orange); flex-shrink: 0; margin-top: 2px; }
+
+    /* ── PAIN CARDS ── */
+    .pain-section { background: var(--bg); }
+    .section-hint {
+      font-size: 15px; color: var(--text-muted);
+      margin-bottom: 1.5rem; text-align: center; margin-top: -0.75rem;
+    }
+    .pain-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px; max-width: 620px; margin: 0 auto 1.5rem;
+    }
+    .pain-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.4rem 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+    }
+    .pain-card:hover {
+      border-color: var(--blue);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(26,74,138,0.13);
+    }
+    .pain-icon { font-size: 32px; margin-bottom: 10px; display: block; }
+    .pain-text { font-size: 14px; color: var(--text-muted); line-height: 1.65; }
+    .tap-hint { font-size: 13px; color: var(--blue); margin-top: 9px; opacity: 0.75; }
+    .pain-arrow {
+      display: flex; align-items: center;
+      justify-content: center; gap: 10px; flex-wrap: wrap;
+      max-width: 620px; margin: 0 auto;
+    }
+    .pain-before { color: var(--text-muted); font-size: 15px; }
+    .pain-after { color: var(--blue); font-weight: 700; font-size: 15px; }
+
+    /* ── REJECT ── */
+    .reject-section { background: var(--navy); color: white; text-align: center; }
+    .reject-title { font-size: clamp(24px, 5.5vw, 30px); font-weight: 900; line-height: 1.4; margin-bottom: 0.6rem; }
+    .reject-title .acc { color: var(--orange); }
+    .reject-desc { font-size: 16px; opacity: 0.9; line-height: 2.0; margin-bottom: 2rem; }
+    .reject-badges {
+      display: flex; flex-wrap: wrap;
+      justify-content: center; gap: 12px; margin-bottom: 2rem;
+      max-width: 560px; margin-left: auto; margin-right: auto;
+    }
+    .rej-badge {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: white; font-size: 15px; font-weight: 700;
+      padding: 15px 22px; border-radius: 10px; line-height: 1.4;
+      flex: 1; min-width: 200px;
+    }
+    .rej-badge span { display: block; font-size: 13px; font-weight: 400; opacity: 0.78; margin-top: 6px; }
+    .stats-row { display: flex; justify-content: center; gap: 2.5rem; flex-wrap: wrap; }
+    .stat-num { font-size: 34px; font-weight: 900; color: var(--orange); }
+    .stat-label { font-size: 14px; opacity: 0.8; margin-top: 5px; }
+
+    /* ── STEPS ── */
+    .steps-section { background: var(--white); }
+    .steps { max-width: 500px; margin: 0 auto; }
+    .step {
+      display: flex; gap: 16px; text-align: left;
+      padding: 1.4rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .step:last-child { border-bottom: none; }
+    .step-num {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--navy); color: white;
+      font-size: 15px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 2px;
+    }
+    .step-title { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
+    .step-desc { font-size: 15px; color: var(--text-muted); line-height: 1.85; }
+
+    /* ── SEMINAR ── */
+    .seminar-section { background: var(--bg); }
+    .seminar-card {
+      max-width: 500px; margin: 0 auto;
+      background: var(--card-bg);
+      border: 2px solid var(--blue);
+      border-radius: var(--radius-lg);
+      padding: 2rem 1.75rem;
+    }
+    .seminar-tag {
+      display: inline-block; background: var(--orange);
+      color: white; font-size: 13px; font-weight: 700;
+      padding: 6px 16px; border-radius: 20px;
+      margin-bottom: 1rem; letter-spacing: 1px;
+    }
+    .seminar-title { font-size: 22px; font-weight: 900; margin-bottom: 0.75rem; line-height: 1.45; }
+    .seminar-desc { font-size: 16px; color: var(--text-muted); line-height: 1.9; margin-bottom: 1.5rem; }
+    .seminar-features {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 8px; margin-bottom: 1.75rem; text-align: left;
+    }
+    .sf {
+      display: flex; align-items: flex-start;
+      gap: 8px; font-size: 14px; color: var(--text-muted);
+    }
+    .sf::before { content: '✓'; color: var(--blue); font-weight: 700; font-size: 15px; flex-shrink: 0; }
+    .seminar-cta {
+      width: 100%; background: var(--navy);
+      color: white; font-size: 17px; font-weight: 700;
+      padding: 16px; border-radius: 50px;
+      border: none; cursor: pointer;
+      font-family: 'Noto Sans KR', sans-serif;
+      transition: background 0.15s;
+    }
+    .seminar-cta:hover { background: var(--blue); }
+
+    /* ── CONTACT ── */
+    .contact-section { background: var(--white); text-align: center; padding: 2.5rem 1.5rem; }
+    .agent-row {
+      display: flex; align-items: center;
+      justify-content: center; gap: 1rem; margin-bottom: 1.25rem;
+    }
+    .agent-photo {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: #e5e7eb;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .agent-photo img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center top;
+    }
+    .agent-name { font-size: 20px; font-weight: 700; text-align: left; }
+    .agent-name span { font-size: 15px; font-weight: 400; color: var(--text-muted); }
+    .agent-nmls { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+    .contact-phone { font-size: 32px; font-weight: 900; color: var(--navy); margin-bottom: 1rem; letter-spacing: 1px; }
+    .contact-links { display: flex; flex-direction: column; gap: 8px; font-size: 15px; color: var(--text-muted); align-items: center; }
+    .contact-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.15s;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .contact-links a:hover { color: var(--blue); }
+    .contact-phone { display: block; text-decoration: none; }
+    .contact-phone:hover { opacity: 0.8; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navy); color: rgba(255,255,255,0.55);
+      font-size: 13px; text-align: center; padding: 1.5rem;
+    }
+
+    /* ── PAIN POPUP ── */
+    .overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.58); z-index: 900;
+      align-items: center; justify-content: center;
+      padding: 1.25rem;
+    }
+    .overlay.active { display: flex; }
+    .popup {
+      background: var(--card-bg);
+      border-radius: 20px;
+      width: 100%; max-width: 440px;
+      padding: 2rem 1.75rem;
+      position: relative;
+      max-height: 90vh; overflow-y: auto;
+      animation: popIn 0.2s ease;
+    }
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.94) translateY(10px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .popup-close {
+      position: absolute; top: 14px; right: 14px;
+      background: var(--bg); border: none;
+      width: 30px; height: 30px; border-radius: 50%;
+      font-size: 14px; cursor: pointer; color: var(--text-muted);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .popup-close:hover { background: #e5e7eb; }
+    .popup-icon { font-size: 48px; margin-bottom: 1rem; display: block; text-align: center; }
+    .popup-q {
+      font-size: 20px; font-weight: 900; line-height: 1.45;
+      margin-bottom: 1.25rem; text-align: center; white-space: pre-line;
+    }
+    .popup-divider {
+      height: 3px;
+      background: linear-gradient(90deg, var(--navy), var(--blue-light));
+      border-radius: 3px; margin-bottom: 1rem;
+    }
+    .popup-answer { font-size: 16px; line-height: 2.0; color: var(--text-muted); }
+    .popup-answer strong { color: var(--text); font-weight: 700; }
+    .popup-tip {
+      margin-top: 1rem;
+      background: #fff8ee;
+      border-left: 3px solid var(--orange);
+      border-radius: 0 8px 8px 0;
+      padding: 0.85rem 1rem;
+      font-size: 15px; color: var(--text-muted); line-height: 1.85;
+    }
+    .popup-tip strong { color: var(--blue); }
+    .popup-cta {
+      width: 100%; background: var(--navy);
+      color: white; font-size: 16px; font-weight: 700;
+      padding: 15px; border-radius: 50px;
+      border: none; cursor: pointer;
+      font-family: 'Noto Sans KR', sans-serif;
+      margin-top: 1.25rem; transition: background 0.15s;
+    }
+    .popup-cta:hover { background: var(--blue); }
+
+    /* ── SEMINAR POPUP ── */
+    .sem-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.6); z-index: 1000;
+      align-items: center; justify-content: center;
+      padding: 1rem;
+    }
+    .sem-overlay.active { display: flex; }
+    .sem-popup {
+      background: var(--card-bg);
+      border-radius: 20px;
+      width: 100%; max-width: 500px;
+      padding: 2rem 1.75rem;
+      position: relative;
+      max-height: 94vh; overflow-y: auto;
+      animation: popIn 0.2s ease;
+    }
+    .sem-popup .popup-close { position: absolute; top: 14px; right: 14px; }
+    .popup-title { font-size: 22px; font-weight: 900; margin-bottom: 0.5rem; }
+    .popup-sub { font-size: 15px; color: var(--text-muted); margin-bottom: 1.75rem; line-height: 1.75; }
+    .form-group { margin-bottom: 1rem; }
+    .form-label {
+      font-size: 14px; font-weight: 700;
+      color: var(--text-muted); display: block;
+      margin-bottom: 7px; letter-spacing: 0.3px;
+    }
+    .form-label .req { color: #e53e3e; }
+    .form-input, .form-select, .form-textarea {
+      width: 100%; padding: 13px 15px;
+      border: 1px solid #d1d5db;
+      border-radius: var(--radius);
+      font-size: 16px; font-family: 'Noto Sans KR', sans-serif;
+      background: white; color: var(--text);
+      outline: none; transition: border-color 0.15s;
+      appearance: auto;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(26,74,138,0.12);
+    }
+    .form-textarea { resize: vertical; min-height: 76px; }
+    .date-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .submit-btn {
+      width: 100%; background: var(--navy);
+      color: white; font-size: 17px; font-weight: 700;
+      padding: 16px; border-radius: 50px;
+      border: none; cursor: pointer;
+      font-family: 'Noto Sans KR', sans-serif;
+      margin-top: 0.75rem; transition: background 0.15s;
+    }
+    .submit-btn:hover { background: var(--blue); }
+    .submit-btn:disabled { background: #9ca3af; cursor: not-allowed; }
+    .form-notice {
+      font-size: 13px; color: var(--text-muted);
+      text-align: center; margin-top: 1rem; line-height: 1.7;
+    }
+    .err-msg { font-size: 14px; color: #e53e3e; margin-bottom: 0.75rem; display: none; }
+    .success-area { text-align: center; padding: 1.5rem 0; display: none; }
+    .success-icon { font-size: 56px; margin-bottom: 1.25rem; display: block; }
+    .success-title { font-size: 22px; font-weight: 900; margin-bottom: 0.75rem; color: var(--navy); }
+    .success-desc { font-size: 13px; color: var(--text-muted); line-height: 1.7; }
+    .success-close {
+      margin-top: 1.5rem; background: var(--navy);
+      color: white; border: none;
+      padding: 13px 34px; border-radius: 50px;
+      cursor: pointer; font-size: 16px; font-weight: 700;
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+
+    @media (max-width: 480px) {
+      .seminar-features { grid-template-columns: 1fr; }
+      .date-row { grid-template-columns: 1fr; }
+      .reject-badges { flex-direction: column; }
+      .rej-badge { min-width: unset; }
+    }
+
+    /* ── LANGUAGE TOGGLE ── */
+    .lang-toggle-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 999;
+      display: flex;
+      justify-content: flex-end;
+      padding: 8px 14px;
+      background: rgba(11,45,94,0.92);
+      backdrop-filter: blur(8px);
+    }
+    .lang-toggle {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 20px;
+      padding: 5px 12px 5px 8px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .lang-toggle:hover { background: rgba(255,255,255,0.2); }
+    .lang-flag { font-size: 18px; line-height: 1; }
+    .lang-label { font-size: 12px; font-weight: 700; color: white; letter-spacing: 1px; }
+    body { padding-top: 38px; }
+    .en { display: none; }
+    body.lang-en .ko { display: none; }
+    body.lang-en .en { display: revert; }
+
+    /* ── BLOG SECTION ── */
+    .blog-section { background: var(--bg); }
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+      max-width: 820px;
+      margin: 0 auto;
+    }
+    .blog-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .blog-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 28px rgba(11,45,94,0.12);
+    }
+    .blog-thumb {
+      height: 148px;
+      background: linear-gradient(135deg, #0B2D5E, #2563B8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+    }
+    .blog-body { padding: 1.2rem; }
+    .blog-tag {
+      font-size: 11px; font-weight: 700;
+      color: var(--blue); letter-spacing: 1.5px;
+      text-transform: uppercase; margin-bottom: 6px;
+    }
+    .blog-title {
+      font-size: 16px; font-weight: 900;
+      line-height: 1.45; margin-bottom: 8px; color: var(--text);
+    }
+    .blog-excerpt {
+      font-size: 13px; color: var(--text-muted);
+      line-height: 1.7;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .blog-meta {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      margin-top: 10px; font-size: 12px; color: var(--text-muted);
+    }
+    .blog-read-more {
+      color: var(--blue); font-weight: 700; font-size: 12px;
+    }
+
+    /* ── BLOG POPUP ── */
+    .blog-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.6); z-index: 1100;
+      align-items: center; justify-content: center;
+      padding: 1rem;
+    }
+    .blog-overlay.active { display: flex; }
+    .blog-popup {
+      background: var(--card-bg);
+      border-radius: 20px;
+      width: 100%; max-width: 580px;
+      padding: 2rem 1.75rem;
+      position: relative;
+      max-height: 92vh; overflow-y: auto;
+      animation: popIn 0.2s ease;
+    }
+    .blog-popup-tag {
+      font-size: 11px; font-weight: 700;
+      color: var(--blue); letter-spacing: 1.5px;
+      text-transform: uppercase; margin-bottom: 10px;
+    }
+    .blog-popup-title {
+      font-size: 24px; font-weight: 900;
+      line-height: 1.4; margin-bottom: 1rem; color: var(--text);
+    }
+    .blog-popup-meta {
+      font-size: 13px; color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .blog-popup-body {
+      font-size: 16px; line-height: 2.0; color: var(--text-muted);
+    }
+    .blog-popup-body h3 {
+      font-size: 18px; font-weight: 900; color: var(--text);
+      margin: 1.5rem 0 0.6rem;
+    }
+    .blog-popup-body strong { color: var(--text); font-weight: 700; }
+    .blog-popup-body p { margin-bottom: 1rem; }
+    .blog-popup-cta {
+      width: 100%; background: var(--navy);
+      color: white; font-size: 16px; font-weight: 700;
+      padding: 15px; border-radius: 50px;
+      border: none; cursor: pointer;
+      font-family: 'Noto Sans KR', sans-serif;
+      margin-top: 1.5rem; transition: background 0.15s;
+    }
+    .blog-popup-cta:hover { background: var(--blue); }
+    .blog-admin-note {
+      text-align: center; margin-top: 1.25rem;
+      font-size: 13px; color: var(--text-muted);
+      background: #f0f4ff; border-radius: 10px;
+      padding: 1rem; line-height: 1.7;
+    }
+
+    /* ── ADMIN ── */
+    .admin-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.7); z-index: 2000;
+      align-items: center; justify-content: center;
+      padding: 1rem;
+    }
+    .admin-overlay.active { display: flex; }
+
+    /* password screen */
+    .admin-pw-box {
+      background: var(--card-bg);
+      border-radius: 20px;
+      width: 100%; max-width: 340px;
+      padding: 2.2rem 2rem;
+      text-align: center;
+      animation: popIn 0.2s ease;
+    }
+    .admin-pw-icon { font-size: 40px; margin-bottom: 0.75rem; }
+    .admin-pw-title { font-size: 20px; font-weight: 900; margin-bottom: 0.5rem; color: var(--navy); }
+    .admin-pw-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 1.25rem; }
+    .admin-pw-input {
+      width: 100%; padding: 13px 15px;
+      border: 1.5px solid #d1d5db; border-radius: var(--radius);
+      font-size: 18px; text-align: center; letter-spacing: 4px;
+      font-family: 'Noto Sans KR', sans-serif;
+      outline: none; transition: border-color 0.15s;
+      margin-bottom: 0.75rem;
+    }
+    .admin-pw-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(26,74,138,0.12); }
+    .admin-pw-input.shake { animation: shake 0.35s ease; border-color: #e53e3e; }
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20% { transform: translateX(-8px); }
+      40% { transform: translateX(8px); }
+      60% { transform: translateX(-5px); }
+      80% { transform: translateX(5px); }
+    }
+    .admin-pw-err { font-size: 13px; color: #e53e3e; margin-bottom: 0.75rem; min-height: 18px; }
+    .admin-pw-btn {
+      width: 100%; background: var(--navy); color: white;
+      font-size: 15px; font-weight: 700; padding: 13px;
+      border-radius: 50px; border: none; cursor: pointer;
+      font-family: 'Noto Sans KR', sans-serif;
+      transition: background 0.15s; margin-bottom: 0.75rem;
+    }
+    .admin-pw-btn:hover { background: var(--blue); }
+    .admin-pw-cancel { font-size: 13px; color: var(--text-muted); cursor: pointer; }
+    .admin-pw-cancel:hover { color: var(--text); }
+
+    /* admin panel */
+    .admin-panel {
+      background: var(--card-bg);
+      border-radius: 20px;
+      width: 100%; max-width: 680px;
+      max-height: 94vh; overflow-y: auto;
+      animation: popIn 0.2s ease;
+    }
+    .admin-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.5rem 1.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; background: white;
+      border-radius: 20px 20px 0 0; z-index: 10;
+    }
+    .admin-header-title { font-size: 18px; font-weight: 900; color: var(--navy); }
+    .admin-header-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .admin-close {
+      background: var(--bg); border: none;
+      width: 32px; height: 32px; border-radius: 50%;
+      font-size: 14px; cursor: pointer; color: var(--text-muted);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .admin-close:hover { background: #e5e7eb; }
+    .admin-body { padding: 1.25rem 1.75rem 1.75rem; }
+
+    .admin-post-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 1.5rem; }
+    .admin-post-item {
+      display: flex; align-items: center; gap: 12px;
+      background: var(--bg); border-radius: var(--radius);
+      padding: 0.85rem 1rem;
+    }
+    .admin-post-emoji { font-size: 26px; flex-shrink: 0; }
+    .admin-post-info { flex: 1; min-width: 0; }
+    .admin-post-name { font-size: 14px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .admin-post-date { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .admin-post-actions { display: flex; gap: 6px; flex-shrink: 0; }
+    .admin-btn-edit, .admin-btn-del {
+      font-size: 12px; font-weight: 700; padding: 6px 12px;
+      border-radius: 20px; border: none; cursor: pointer;
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+    .admin-btn-edit { background: #e8f0fe; color: var(--blue); }
+    .admin-btn-edit:hover { background: #c7d9fc; }
+    .admin-btn-del { background: #fde8e8; color: #c53030; }
+    .admin-btn-del:hover { background: #fcc; }
+
+    .admin-add-btn {
+      width: 100%; background: var(--navy); color: white;
+      font-size: 15px; font-weight: 700; padding: 14px;
+      border-radius: 50px; border: none; cursor: pointer;
+      font-family: 'Noto Sans KR', sans-serif;
+      transition: background 0.15s; margin-bottom: 1.5rem;
+    }
+    .admin-add-btn:hover { background: var(--blue); }
+
+    /* edit form */
+    .admin-form { display: none; }
+    .admin-form.open { display: block; }
+    .admin-form-title {
+      font-size: 16px; font-weight: 900; color: var(--navy);
+      margin-bottom: 1rem; padding-top: 0.5rem;
+      border-top: 2px solid var(--border);
+    }
+    .admin-form-row { margin-bottom: 0.85rem; }
+    .admin-form-label {
+      font-size: 12px; font-weight: 700; color: var(--text-muted);
+      display: block; margin-bottom: 5px; letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .admin-form-input, .admin-form-textarea {
+      width: 100%; padding: 10px 13px;
+      border: 1px solid #d1d5db; border-radius: var(--radius);
+      font-size: 14px; font-family: 'Noto Sans KR', sans-serif;
+      outline: none; transition: border-color 0.15s;
+    }
+    .admin-form-input:focus, .admin-form-textarea:focus {
+      border-color: var(--blue); box-shadow: 0 0 0 3px rgba(26,74,138,0.1);
+    }
+    .admin-form-textarea { resize: vertical; min-height: 90px; }
+    .admin-form-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .admin-form-hint { font-size: 11px; color: var(--text-muted); margin-top: 4px; line-height: 1.5; }
+    .admin-save-btn {
+      background: var(--orange); color: white;
+      font-size: 14px; font-weight: 700; padding: 12px 28px;
+      border-radius: 50px; border: none; cursor: pointer;
+      font-family: 'Noto Sans KR', sans-serif;
+      margin-right: 8px; transition: opacity 0.15s;
+    }
+    .admin-save-btn:hover { opacity: 0.88; }
+    .admin-cancel-btn {
+      background: var(--bg); color: var(--text-muted);
+      font-size: 14px; font-weight: 700; padding: 12px 20px;
+      border-radius: 50px; border: none; cursor: pointer;
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+    .admin-cancel-btn:hover { background: #e5e7eb; }
+    .admin-logout {
+      text-align: center; margin-top: 1.25rem;
+      font-size: 13px; color: var(--text-muted);
+    }
+    .admin-logout span { cursor: pointer; text-decoration: underline; }
+    .admin-logout span:hover { color: var(--text); }
+  </style>
+</head>
+<body>
+
+<!-- ── LANGUAGE TOGGLE ── -->
+<div class="lang-toggle-bar">
+  <button class="lang-toggle" onclick="toggleLang()" id="langBtn" title="Switch Language">
+    <span class="lang-flag" id="langFlag">🇺🇸</span>
+    <span class="lang-label" id="langLabel">EN</span>
+  </button>
+</div>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="logo-wrap">
+    <div class="logo-icon-block">
+      <img src="logo.png" alt="DoDream Mortgage Logo">
+    </div>
+    <div class="logo-divider"></div>
+    <div class="logo-text-block">
+      <div class="logo-tagline">꿈을 이뤄드리는 &nbsp;<strong>두드림 모기지</strong></div>
+      <div class="logo-name">DoDream Mortgage</div>
+      <div class="logo-sub">Open the Door to Your Dream Home</div>
+    </div>
+  </div>
+
+  <div class="door-wrap">
+    <div class="door-bg"></div>
+    <div class="door-glow"></div>
+    <div class="door-panel"><div class="door-knob"></div></div>
+    <div class="door-frame"></div>
+  </div>
+
+  <h1 class="hero-headline">
+    <span class="ko">모기지, <span class="acc">어렵지 않습니다.</span><br>두드리면 열립니다.</span>
+    <span class="en">Mortgage, <span class="acc">made simple.</span><br>Knock, and the door opens.</span>
+  </h1>
+  <p class="hero-sub">
+    <span class="ko">처음 집을 사는 게 막막하신가요?<br>복잡한 서류, 낯선 용어, 어디서 시작할지 모르는 막막함—<br>저희가 처음부터 끝까지 함께합니다.</span>
+    <span class="en">Feeling overwhelmed buying your first home?<br>Complex paperwork, unfamiliar terms, not knowing where to start—<br>We guide you every step of the way.</span>
+  </p>
+  <button class="hero-cta" onclick="openSeminar()">
+    <span class="ko">무료 1:1 세미나 신청하기 →</span>
+    <span class="en">Book Free 1:1 Seminar →</span>
+  </button>
+  <div class="badge-row">
+    <span class="badge ko">첫 집 구매 전문</span>
+    <span class="badge en">First Home Specialists</span>
+    <span class="badge">NMLS: 1209440</span>
+    <span class="badge ko">영어/한국어 상담 가능</span>
+    <span class="badge en">English / Korean Service</span>
+  </div>
+</section>
+
+<!-- ── MAGIC RATE ── -->
+<section class="magic-section">
+  <div class="section-label">
+    <span class="ko">✨ 두드림 특별 혜택</span>
+    <span class="en">✨ DoDream Advantage</span>
+  </div>
+  <h2 class="section-title">
+    <span class="ko">주변 사람들보다<br><span style="color:var(--blue);">더 낮은 이자율</span>로 집 사는<br>마법 같은 방법</span>
+    <span class="en">The secret to getting a<br><span style="color:var(--blue);">lower rate</span> than everyone else</span>
+  </h2>
+  <div class="magic-card">
+    <div class="magic-headline">
+      <span class="ko">왜 두드림 모기지가<br><span class="acc">이자율이 더 낮을까요?</span></span>
+      <span class="en">Why DoDream gets you<br><span class="acc">a lower interest rate?</span></span>
+    </div>
+    <ul class="magic-list">
+      <li>
+        <span class="ko">수십 개의 렌더(대출기관)를 한 번에 비교해 가장 낮은 이자율을 찾아드립니다. 은행은 자기 상품만 팔지만, 저희는 여러분 편입니다.</span>
+        <span class="en">We compare dozens of lenders at once to find you the lowest rate. Banks sell their own products — we work for you.</span>
+      </li>
+      <li>
+        <span class="ko">크레딧 점수를 올리는 전략적 타이밍 컨설팅으로 신청 전 이자율을 낮춥니다.</span>
+        <span class="en">Strategic credit score consulting before application lowers your rate before you even apply.</span>
+      </li>
+      <li>
+        <span class="ko">포인트 바이다운(Rate Buydown) 전략으로 장기적으로 수십만 달러를 절약하는 방법을 안내합니다.</span>
+        <span class="en">We show you how to save hundreds of thousands with Rate Buydown strategies over the long term.</span>
+      </li>
+      <li>
+        <span class="ko">첫 집 구매자 특별 프로그램 — 정부 지원 론(FHA, USDA, VA)으로 시중보다 낮은 금리 혜택을 받을 수 있습니다.</span>
+        <span class="en">First-time buyer programs — FHA, USDA, VA government-backed loans with below-market rates.</span>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ── PAIN CARDS ── -->
+<section class="pain-section">
+  <div class="section-label">
+    <span class="ko">이런 걱정 있으시죠?</span>
+    <span class="en">Common Concerns</span>
+  </div>
+  <h2 class="section-title">
+    <span class="ko">처음이라 모든 게<br>낯설고 두렵습니다</span>
+    <span class="en">First time feels<br>overwhelming — we get it</span>
+  </h2>
+  <p class="section-hint">
+    <span class="ko">궁금한 항목을 눌러보세요 👇</span>
+    <span class="en">Tap a card to get answers 👇</span>
+  </p>
+
+  <div class="pain-cards">
+    <div class="pain-card" onclick="openCard(0)">
+      <span class="pain-icon">📄</span>
+      <div class="pain-text ko">서류가 너무 많아서 뭘 준비해야 할지 모르겠어요</div>
+      <div class="pain-text en">I don't know what documents I need to prepare</div>
+      <div class="tap-hint ko">탭해서 알아보기 →</div>
+      <div class="tap-hint en">Tap to learn more →</div>
+    </div>
+    <div class="pain-card" onclick="openCard(1)">
+      <span class="pain-icon">🏦</span>
+      <div class="pain-text ko">은행에서 거절당한 적 있어서 또 신청하기 두렵습니다</div>
+      <div class="pain-text en">I was rejected by a bank and afraid to try again</div>
+      <div class="tap-hint ko">탭해서 알아보기 →</div>
+      <div class="tap-hint en">Tap to learn more →</div>
+    </div>
+    <div class="pain-card" onclick="openCard(2)">
+      <span class="pain-icon">💸</span>
+      <div class="pain-text ko">다운페이가 얼마나 있어야 집을 살 수 있는지 몰라요</div>
+      <div class="pain-text en">I don't know how much down payment I need</div>
+      <div class="tap-hint ko">탭해서 알아보기 →</div>
+      <div class="tap-hint en">Tap to learn more →</div>
+    </div>
+    <div class="pain-card" onclick="openCard(3)">
+      <span class="pain-icon">🤯</span>
+      <div class="pain-text ko">Rate, APR, PMI... 용어가 너무 어렵습니다</div>
+      <div class="pain-text en">Rate, APR, PMI... the terminology is so confusing</div>
+      <div class="tap-hint ko">탭해서 알아보기 →</div>
+      <div class="tap-hint en">Tap to learn more →</div>
+    </div>
+    <div class="pain-card" onclick="openCard(4)">
+      <span class="pain-icon">✅</span>
+      <div class="pain-text ko">Pre-Approval이 필요해요</div>
+      <div class="pain-text en">I need a Pre-Approval letter</div>
+      <div class="tap-hint ko">탭해서 알아보기 →</div>
+      <div class="tap-hint en">Tap to learn more →</div>
+    </div>
+    <div class="pain-card" onclick="openCard(5)">
+      <span class="pain-icon">🤔</span>
+      <div class="pain-text ko">집 사기 vs 집 렌트, 뭐가 더 이득일까요?</div>
+      <div class="pain-text en">Buy vs. Rent — which is better for me?</div>
+      <div class="tap-hint ko">탭해서 알아보기 →</div>
+      <div class="tap-hint en">Tap to learn more →</div>
+    </div>
+    <div class="pain-card" onclick="openCard(6)">
+      <span class="pain-icon">📉</span>
+      <div class="pain-text ko">집이 있는데 이자율을 낮추고 싶어요</div>
+      <div class="pain-text en">I own a home and want to lower my interest rate</div>
+      <div class="tap-hint ko">탭해서 알아보기 →</div>
+      <div class="tap-hint en">Tap to learn more →</div>
+    </div>
+    <div class="pain-card" onclick="openCard(7)">
+      <span class="pain-icon">💼</span>
+      <div class="pain-text ko">자영업자인데 모기지가 가능할까요?</div>
+      <div class="pain-text en">I'm self-employed — can I still get a mortgage?</div>
+      <div class="tap-hint ko">탭해서 알아보기 →</div>
+      <div class="tap-hint en">Tap to learn more →</div>
+    </div>
+  </div>
+
+  <div class="pain-arrow">
+    <span class="pain-before ko">걱정 → 혼란 → 포기?</span>
+    <span class="pain-before en">Worry → Confusion → Give up?</span>
+    <span style="color:var(--orange);font-size:18px;font-weight:700;">→</span>
+    <span class="pain-after ko">두드림과 함께라면 OK</span>
+    <span class="pain-after en">With DoDream, it's OK</span>
+  </div>
+</section>
+
+<!-- ── REJECT / HARD LOANS ── -->
+<section class="reject-section">
+  <h2 class="reject-title">
+    <span class="ko">대형 은행에서 거절당해도<br><span class="acc">포기하지 마세요</span></span>
+    <span class="en">Rejected by a big bank?<br><span class="acc">Don't give up.</span></span>
+  </h2>
+  <p class="reject-desc">
+    <span class="ko">두드림 모기지는 다양한 론 옵션과 네트워크를 통해<br>여러분의 상황에 맞는 해결책을 찾아드립니다.</span>
+    <span class="en">DoDream Mortgage uses a wide network of lenders<br>to find the solution that fits your situation.</span>
+  </p>
+  <div class="reject-badges">
+    <div class="rej-badge">
+      <span class="ko">어려운 융자도 도와드립니다<span>복잡한 상황, 낮은 크레딧, 자영업자 모두 OK</span></span>
+      <span class="en">We handle tough loans<span>Complex situations, low credit, self-employed — all OK</span></span>
+    </div>
+    <div class="rej-badge">
+      <span class="ko">세금보고 없이 융자받는 방법도 있습니다<span>Bank Statement · No-Doc · DSCR 등 다양한 옵션</span></span>
+      <span class="en">Loans without tax returns are possible<span>Bank Statement · No-Doc · DSCR and more</span></span>
+    </div>
+  </div>
+  <div class="stats-row">
+    <div class="stat"><div class="stat-num">3.5%</div><div class="stat-label ko">FHA 최소 다운페이</div><div class="stat-label en">FHA Min Down</div></div>
+    <div class="stat"><div class="stat-num">0%</div><div class="stat-label ko">USDA/VA 다운페이</div><div class="stat-label en">USDA/VA Down</div></div>
+    <div class="stat"><div class="stat-num">580+</div><div class="stat-label ko">FHA 최소 크레딧</div><div class="stat-label en">FHA Min Credit</div></div>
+  </div>
+</section>
+
+<!-- ── STEPS ── -->
+<section class="steps-section">
+  <div class="section-label">
+    <span class="ko">이렇게 도와드립니다</span>
+    <span class="en">How We Help You</span>
+  </div>
+  <h2 class="section-title">
+    <span class="ko">3단계로<br>첫 집 문이 열립니다</span>
+    <span class="en">3 steps to opening<br>the door to your first home</span>
+  </h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div>
+        <div class="step-title">
+          <span class="ko">문을 두드리세요 — 무료 상담</span>
+          <span class="en">Knock — Free Consultation</span>
+        </div>
+        <div class="step-desc">
+          <span class="ko">어떤 질문이든 OK입니다. 재정 상태, 크레딧, 다운페이 — 부담 없이 이야기해 주세요.</span>
+          <span class="en">Any question is OK. Finances, credit, down payment — talk to us without pressure.</span>
+        </div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div>
+        <div class="step-title">
+          <span class="ko">나에게 맞는 론 찾기</span>
+          <span class="en">Find Your Perfect Loan</span>
+        </div>
+        <div class="step-desc">
+          <span class="ko">FHA, Conventional, Bank Statement 등 수십 가지 옵션 중 가장 유리한 조건을 찾아드립니다.</span>
+          <span class="en">From FHA, Conventional, Bank Statement — we find the best terms among dozens of options.</span>
+        </div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div>
+        <div class="step-title">
+          <span class="ko">내 집 문을 엽니다</span>
+          <span class="en">Open the Door to Your Home</span>
+        </div>
+        <div class="step-desc">
+          <span class="ko">서류 준비부터 클로징까지, 모든 과정을 한국어로 안내해 드립니다.</span>
+          <span class="en">From paperwork to closing — we guide you through every step in both English and Korean.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SEMINAR ── -->
+<section class="seminar-section">
+  <div class="section-label">
+    <span class="ko">무료 이벤트</span>
+    <span class="en">Free Event</span>
+  </div>
+  <h2 class="section-title">
+    <span class="ko">내 집 마련하기<br>1:1 세미나</span>
+    <span class="en">Home Buying<br>1:1 Seminar</span>
+  </h2>
+  <div class="seminar-card">
+    <div class="seminar-tag">
+      <span class="ko">FREE · 한국어/영어 진행</span>
+      <span class="en">FREE · English / Korean</span>
+    </div>
+    <div class="seminar-title">
+      <span class="ko">처음 집 사는 분들을 위한<br>모기지 완전 정복</span>
+      <span class="en">Mortgage Mastery for<br>First-Time Home Buyers</span>
+    </div>
+    <p class="seminar-desc">
+      <span class="ko">어려운 용어 없이, 쉽고 친절하게.<br>내 상황에 맞는 론 옵션을 1:1로 알려드립니다.</span>
+      <span class="en">No confusing jargon — clear, friendly guidance.<br>We'll find the right loan option for your situation.</span>
+    </p>
+    <div class="seminar-features">
+      <div class="sf"><span class="ko">모기지 기초 용어 설명</span><span class="en">Mortgage Basics</span></div>
+      <div class="sf"><span class="ko">크레딧 올리는 방법</span><span class="en">Credit Score Tips</span></div>
+      <div class="sf"><span class="ko">다운페이 준비 전략</span><span class="en">Down Payment Strategy</span></div>
+      <div class="sf"><span class="ko">서류 준비 체크리스트</span><span class="en">Document Checklist</span></div>
+      <div class="sf"><span class="ko">낮은 이자율 받는 비결</span><span class="en">Getting the Best Rate</span></div>
+      <div class="sf"><span class="ko">현재 금리 분석</span><span class="en">Current Rate Analysis</span></div>
+    </div>
+    <button class="seminar-cta" onclick="openSeminar()">
+      <span class="ko">무료 세미나 신청하기 →</span>
+      <span class="en">Book Free Seminar →</span>
+    </button>
+  </div>
+</section>
+
+<!-- ── BLOG ── -->
+<section class="blog-section">
+  <div class="section-label">
+    <span class="ko">📝 모기지 정보</span>
+    <span class="en">📝 Mortgage Tips</span>
+  </div>
+  <h2 class="section-title">
+    <span class="ko">알아두면 도움되는<br>모기지 이야기</span>
+    <span class="en">Helpful Mortgage<br>Insights</span>
+  </h2>
+  <div class="blog-grid" id="blogGrid"></div>
+</section>
+
+<!-- ── CONTACT ── -->
+<section class="contact-section">
+  <div class="agent-row">
+    <div class="agent-photo"><img src="richard_park.png" alt="리차드 박 Richard Park"></div>
+    <div>
+      <div class="agent-name">리차드 박 <span>Richard Park</span></div>
+      <div class="agent-nmls">NMLS: 1209440</div>
+    </div>
+  </div>
+  <a href="tel:9452160051" class="contact-phone">945-216-0051</a>
+  <div class="contact-links">
+    <a href="mailto:dodreammortgage@gmail.com">✉ dodreammortgage@gmail.com</a>
+    <a href="https://www.google.com/maps/search/?api=1&query=4400+State+HWY+121+Suite+300-389+Lewisville+TX" target="_blank">📍 4400 State HWY 121 Suite 300-389</a>
+    <a href="https://www.dodreammortgage.com" target="_blank">🌐 www.dodreammortgage.com</a>
+  </div>
+</section>
+
+<footer>
+  <span id="adminTrigger" onclick="adminTap()" style="cursor:default;user-select:none;">Copyright 2025 DoDream Mortgage · AjooProjects.com All rights reserved.</span>
+</footer>
+
+
+<!-- ══ PAIN CARD POPUP ══ -->
+<div class="overlay" id="cardOverlay" onclick="handleCardOverlay(event)">
+  <div class="popup" id="cardPopup">
+    <button class="popup-close" onclick="closeCard()">✕</button>
+    <span class="popup-icon" id="pIcon"></span>
+    <div class="popup-q" id="pQ"></div>
+    <div class="popup-divider"></div>
+    <div class="popup-answer" id="pA"></div>
+    <div class="popup-tip" id="pTip"></div>
+    <button class="popup-cta" onclick="closeCard(); openSeminar()">
+      <span class="ko">무료 1:1 상담 신청하기 →</span>
+      <span class="en">Book Free 1:1 Consultation →</span>
+    </button>
+  </div>
+</div>
+
+
+<!-- ══ BLOG POPUP ══ -->
+<div class="blog-overlay" id="blogOverlay" onclick="handleBlogOverlay(event)">
+  <div class="blog-popup" id="blogPopup">
+    <button class="popup-close" onclick="closeBlog()">✕</button>
+    <div class="blog-popup-tag" id="bTag"></div>
+    <div class="blog-popup-title" id="bTitle"></div>
+    <div class="blog-popup-meta" id="bMeta"></div>
+    <div class="blog-popup-body" id="bBody"></div>
+    <button class="blog-popup-cta" onclick="closeBlog(); openSeminar()">
+      <span class="ko">무료 1:1 상담 신청하기 →</span>
+      <span class="en">Book Free 1:1 Consultation →</span>
+    </button>
+  </div>
+</div>
+
+<!-- ══ ADMIN OVERLAY ══ -->
+<div class="admin-overlay" id="adminOverlay">
+
+  <!-- Password Screen -->
+  <div class="admin-pw-box" id="adminPwBox">
+    <div class="admin-pw-icon">🔐</div>
+    <div class="admin-pw-title">관리자 로그인</div>
+    <div class="admin-pw-sub">블로그 관리자 비밀번호를 입력하세요</div>
+    <input type="password" class="admin-pw-input" id="adminPwInput"
+      placeholder="••••••" maxlength="20"
+      onkeydown="if(event.key==='Enter') adminLogin()">
+    <div class="admin-pw-err" id="adminPwErr"></div>
+    <button class="admin-pw-btn" onclick="adminLogin()">확인</button>
+    <div class="admin-pw-cancel" onclick="closeAdmin()">취소</div>
+  </div>
+
+  <!-- Admin Panel (hidden until login) -->
+  <div class="admin-panel" id="adminPanel" style="display:none;">
+    <div class="admin-header">
+      <div>
+        <div class="admin-header-title">📝 블로그 관리</div>
+        <div class="admin-header-sub">글을 추가·수정·삭제할 수 있습니다</div>
+      </div>
+      <button class="admin-close" onclick="closeAdmin()">✕</button>
+    </div>
+    <div class="admin-body">
+      <div class="admin-post-list" id="adminPostList"></div>
+      <button class="admin-add-btn" onclick="openAdminForm(-1)">+ 새 글 추가하기</button>
+
+      <!-- Edit / Add Form -->
+      <div class="admin-form" id="adminForm">
+        <div class="admin-form-title" id="adminFormTitle">새 글 작성</div>
+
+        <div class="admin-form-row">
+          <label class="admin-form-label">이모지</label>
+          <input class="admin-form-input" id="af-emoji" placeholder="🏠" maxlength="4" style="width:80px;">
+        </div>
+
+        <div class="admin-form-2col">
+          <div class="admin-form-row">
+            <label class="admin-form-label">태그 (한국어)</label>
+            <input class="admin-form-input" id="af-tagKo" placeholder="첫 집 구매">
+          </div>
+          <div class="admin-form-row">
+            <label class="admin-form-label">Tag (English)</label>
+            <input class="admin-form-input" id="af-tagEn" placeholder="First Home">
+          </div>
+        </div>
+
+        <div class="admin-form-row">
+          <label class="admin-form-label">제목 (한국어)</label>
+          <input class="admin-form-input" id="af-titleKo" placeholder="제목을 입력하세요">
+        </div>
+        <div class="admin-form-row">
+          <label class="admin-form-label">Title (English)</label>
+          <input class="admin-form-input" id="af-titleEn" placeholder="Enter title here">
+        </div>
+
+        <div class="admin-form-2col">
+          <div class="admin-form-row">
+            <label class="admin-form-label">날짜 (한국어)</label>
+            <input class="admin-form-input" id="af-dateKo" placeholder="2025년 7월">
+          </div>
+          <div class="admin-form-row">
+            <label class="admin-form-label">Date (English)</label>
+            <input class="admin-form-input" id="af-dateEn" placeholder="July 2025">
+          </div>
+        </div>
+
+        <div class="admin-form-row">
+          <label class="admin-form-label">요약 (한국어)</label>
+          <textarea class="admin-form-textarea" id="af-excerptKo" placeholder="카드에 표시되는 짧은 요약 (1~2문장)"></textarea>
+        </div>
+        <div class="admin-form-row">
+          <label class="admin-form-label">Excerpt (English)</label>
+          <textarea class="admin-form-textarea" id="af-excerptEn" placeholder="Short summary shown on the card (1–2 sentences)"></textarea>
+        </div>
+
+        <!-- THUMBNAIL IMAGE -->
+        <div class="admin-form-row">
+          <label class="admin-form-label">썸네일 이미지 (선택)</label>
+          <div class="admin-img-upload" id="adminImgUpload" onclick="document.getElementById('af-imgFile').click()">
+            <div class="admin-img-placeholder" id="adminImgPlaceholder">
+              <span style="font-size:28px;">🖼️</span>
+              <div style="font-size:13px;margin-top:6px;">클릭하여 이미지 업로드<br><span style="font-size:11px;opacity:0.7;">JPG · PNG · WebP · 최대 2MB</span></div>
+            </div>
+            <img id="adminImgPreview" class="admin-img-preview" src="" alt="" style="display:none;">
+          </div>
+          <input type="file" id="af-imgFile" accept="image/*" style="display:none;" onchange="handleImgUpload(event)">
+          <div style="margin-top:6px;display:flex;gap:8px;align-items:center;">
+            <input class="admin-form-input" id="af-imgUrl" placeholder="또는 이미지 URL 입력 (https://...)" style="flex:1;" oninput="handleImgUrl(this.value)">
+            <button type="button" onclick="clearAdminImg()" style="padding:8px 12px;background:#fde8e8;color:#c53030;border:none;border-radius:8px;cursor:pointer;font-size:12px;font-weight:700;white-space:nowrap;">제거</button>
+          </div>
+          <div class="admin-form-hint">💡 이미지가 없으면 이모지가 썸네일로 사용됩니다</div>
+        </div>
+
+        <!-- YOUTUBE -->
+        <div class="admin-form-row">
+          <label class="admin-form-label">YouTube 영상 (선택)</label>
+          <input class="admin-form-input" id="af-youtube" placeholder="YouTube URL 또는 영상 ID (예: dQw4w9WgXcQ)">
+          <div class="admin-form-hint">💡 youtube.com/watch?v=XXXX 또는 youtu.be/XXXX 주소를 그대로 붙여넣으면 됩니다</div>
+        </div>
+        <div id="ytPreviewWrap" style="display:none;margin-top:-4px;margin-bottom:0.85rem;">
+          <div style="font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:6px;">영상 미리보기</div>
+          <div style="position:relative;padding-bottom:56.25%;height:0;border-radius:10px;overflow:hidden;background:#000;">
+            <iframe id="ytPreviewFrame" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allowfullscreen></iframe>
+          </div>
+        </div>
+
+        <div class="admin-form-row">
+          <label class="admin-form-label">본문 (한국어) — HTML 사용 가능</label>
+          <textarea class="admin-form-textarea" id="af-bodyKo" style="min-height:130px;" placeholder="&lt;p&gt;본문...&lt;/p&gt;&lt;h3&gt;소제목&lt;/h3&gt;&lt;p&gt;내용...&lt;/p&gt;"></textarea>
+          <div class="admin-form-hint">💡 &lt;p&gt;단락&lt;/p&gt; &lt;h3&gt;소제목&lt;/h3&gt; &lt;strong&gt;굵게&lt;/strong&gt; — 이미지·영상은 자동으로 본문 상단에 삽입됩니다</div>
+        </div>
+        <div class="admin-form-row">
+          <label class="admin-form-label">Body (English) — HTML allowed</label>
+          <textarea class="admin-form-textarea" id="af-bodyEn" style="min-height:130px;" placeholder="&lt;p&gt;Body text...&lt;/p&gt;&lt;h3&gt;Subheading&lt;/h3&gt;"></textarea>
+        </div>
+
+        <div style="margin-top:1rem;">
+          <button class="admin-save-btn" onclick="saveAdminPost()">저장하기 ✓</button>
+          <button class="admin-cancel-btn" onclick="cancelAdminForm()">취소</button>
+        </div>
+      </div>
+
+      <div class="admin-logout">
+        <span onclick="adminLogout()">🔒 로그아웃</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ══ SEMINAR SIGNUP POPUP ══ -->
+<div class="sem-overlay" id="semOverlay" onclick="handleSemOverlay(event)">
+  <div class="sem-popup">
+    <button class="popup-close" onclick="closeSeminar()">✕</button>
+
+    <div id="semForm">
+      <div style="font-size:26px;margin-bottom:0.5rem;text-align:center;">🚪</div>
+      <div class="popup-title">
+        <span class="ko">무료 1:1 세미나 신청</span>
+        <span class="en">Book Free 1:1 Seminar</span>
+      </div>
+      <p class="popup-sub">
+        <span class="ko">내 집 마련하기 · 두드림 모기지<br>아래 내용을 입력하시면 확인 이메일을 보내드립니다.</span>
+        <span class="en">DoDream Mortgage · Home Buying Seminar<br>Fill in the form below and we'll send a confirmation email.</span>
+      </p>
+
+      <div class="form-group">
+        <label class="form-label">
+          <span class="ko">희망 날짜 &amp; 시간 <span class="req">*</span></span>
+          <span class="en">Preferred Date &amp; Time <span class="req">*</span></span>
+        </label>
+        <div class="date-row">
+          <input type="date" class="form-input" id="apptDate">
+          <select class="form-select" id="apptTime">
+            <option value=""><span class="ko">시간 선택</span></option>
+            <option>9:00 AM</option>
+            <option>10:00 AM</option>
+            <option>11:00 AM</option>
+            <option>12:00 PM</option>
+            <option>1:00 PM</option>
+            <option>2:00 PM</option>
+            <option>3:00 PM</option>
+            <option>4:00 PM</option>
+            <option>5:00 PM</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">
+          <span class="ko">이름 <span class="req">*</span></span>
+          <span class="en">Name <span class="req">*</span></span>
+        </label>
+        <input type="text" class="form-input" id="userName" placeholder="Hong Gil-dong / 홍길동">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">
+          <span class="ko">전화번호 <span class="req">*</span></span>
+          <span class="en">Phone <span class="req">*</span></span>
+        </label>
+        <input type="tel" class="form-input" id="userPhone" placeholder="(000) 000-0000">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">
+          <span class="ko">이메일 <span class="req">*</span></span>
+          <span class="en">Email <span class="req">*</span></span>
+        </label>
+        <input type="email" class="form-input" id="userEmail" placeholder="example@email.com">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">
+          <span class="ko">궁금한 주제 <span class="req">*</span></span>
+          <span class="en">Topic of Interest <span class="req">*</span></span>
+        </label>
+        <select class="form-select" id="userTopic">
+          <option value="">
+            <span class="ko">주제를 선택해 주세요</span>
+            <span class="en">Select a topic</span>
+          </option>
+          <option>첫 집 장만 / First Home Purchase</option>
+          <option>낮은 이자율 / Lower Interest Rate</option>
+          <option>나에게 맞는 론 / Finding the Right Loan</option>
+          <option>재정 상담 / Financial Consultation</option>
+          <option>부동산 브로커 협업 / Realtor Partnership</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">
+          <span class="ko">간단한 메모</span>
+          <span class="en">Notes (optional)</span>
+        </label>
+        <textarea class="form-textarea" id="userNote" placeholder="궁금한 점 / Questions or comments..."></textarea>
+      </div>
+
+      <div class="err-msg" id="errMsg"></div>
+      <button class="submit-btn" id="submitBtn" onclick="submitForm()">
+        <span class="ko">신청서 제출하기 →</span>
+        <span class="en">Submit →</span>
+      </button>
+      <p class="form-notice">
+        <span class="ko">제출하시면 확인 이메일이 dodreammortgage@gmail.com 으로 전송되며,<br>신청하신 이메일 주소로도 사본이 발송됩니다.</span>
+        <span class="en">A confirmation email will be sent to dodreammortgage@gmail.com<br>and a copy to your email address.</span>
+      </p>
+    </div>
+
+    <div class="success-area" id="semSuccess">
+      <span class="success-icon">🎉</span>
+      <div class="success-title">
+        <span class="ko">신청이 완료되었습니다!</span>
+        <span class="en">You're all set!</span>
+      </div>
+      <p class="success-desc">
+        <span class="ko">확인 이메일을 보내드렸습니다.<br>리차드 박이 빠른 시일 내에 연락드립니다.<br><br><strong>두드림 모기지 · <a href="tel:9452160051" style="color:var(--navy);text-decoration:none;border-bottom:1px solid var(--navy);">945-216-0051</a></strong></span>
+        <span class="en">A confirmation email has been sent.<br>Richard Park will be in touch soon.<br><br><strong>DoDream Mortgage · <a href="tel:9452160051" style="color:var(--navy);text-decoration:none;border-bottom:1px solid var(--navy);">945-216-0051</a></strong></span>
+      </p>
+      <button class="success-close" onclick="closeSeminar()">
+        <span class="ko">닫기</span>
+        <span class="en">Close</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  /* ════════════════════════════════════════════════════
+     ▼▼▼  설정: Apps Script URL 두 곳 모두 채워주세요  ▼▼▼
+     ════════════════════════════════════════════════════ */
+
+  // 세미나 신청 (기존)
+  const SEMINAR_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxu03JLSS0ok4R89sNAADgEz7HMFiQN-S-SrrNL2OmX9y-_IkHz3d0JP2O_OPWyMLv1/exec';
+
+  // 블로그 관리 (새로 배포한 Apps Script URL로 교체)
+  const BLOG_SCRIPT_URL = 'YOUR_BLOG_APPS_SCRIPT_URL_HERE';
+
+  // 관리자 비밀번호
+  const ADMIN_PASSWORD = 'dodream2025';
+
+  /* ════════════════════════════════════════════════════ */
+
+
+  /* ── LANGUAGE TOGGLE ── */
+  let currentLang = 'ko';
+  function toggleLang() {
+    currentLang = currentLang === 'ko' ? 'en' : 'ko';
+    if (currentLang === 'en') {
+      document.body.classList.add('lang-en');
+      document.getElementById('langFlag').textContent = '🇰🇷';
+      document.getElementById('langLabel').textContent = '한국어';
+    } else {
+      document.body.classList.remove('lang-en');
+      document.getElementById('langFlag').textContent = '🇺🇸';
+      document.getElementById('langLabel').textContent = 'EN';
+    }
+    renderBlog();
+  }
+
+
+  /* ══════════════════════════════════════════
+     BLOG — Google Sheets 연동
+  ══════════════════════════════════════════ */
+
+  let blogPosts = [];   // 런타임 캐시
+
+  /* YouTube ID 추출 */
+  function extractYouTubeId(input) {
+    if (!input) return '';
+    input = input.trim();
+    // 이미 ID만 입력한 경우 (11자 영숫자+_-)
+    if (/^[\w-]{11}$/.test(input)) return input;
+    // URL 파싱
+    try {
+      const url = new URL(input);
+      if (url.hostname.includes('youtu.be')) return url.pathname.slice(1).split('?')[0];
+      return url.searchParams.get('v') || '';
+    } catch { return ''; }
+  }
+
+  /* 썸네일 HTML 생성 */
+  function thumbHtml(p) {
+    if (p.imageUrl) {
+      return `<div class="blog-thumb" style="background:none;padding:0;">
+        <img src="${p.imageUrl}" alt="" style="width:100%;height:148px;object-fit:cover;">
+      </div>`;
+    }
+    if (p.youtubeId) {
+      return `<div class="blog-thumb" style="background:#000;position:relative;">
+        <img src="https://img.youtube.com/vi/${p.youtubeId}/mqdefault.jpg"
+             alt="" style="width:100%;height:148px;object-fit:cover;opacity:0.85;">
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+          <div style="width:44px;height:44px;background:rgba(255,0,0,0.9);border-radius:50%;display:flex;align-items:center;justify-content:center;">
+            <div style="border:solid transparent;border-width:8px 0 8px 16px;border-left-color:white;margin-left:3px;"></div>
+          </div>
+        </div>
+      </div>`;
+    }
+    return `<div class="blog-thumb">${p.emoji || '📝'}</div>`;
+  }
+
+  /* 블로그 카드 렌더 */
+  function renderBlog() {
+    const grid = document.getElementById('blogGrid');
+    const isEn = document.body.classList.contains('lang-en');
+    if (blogPosts.length === 0) {
+      grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:2.5rem;color:var(--text-muted);font-size:15px;">
+        ${isEn ? 'No posts yet. Check back soon!' : '아직 등록된 글이 없습니다.'}
+      </div>`;
+      return;
+    }
+    grid.innerHTML = blogPosts.map((p, i) => `
+      <div class="blog-card" onclick="openBlog(${i})">
+        ${thumbHtml(p)}
+        <div class="blog-body">
+          <div class="blog-tag">${isEn ? (p.tagEn||p.tagKo) : p.tagKo}</div>
+          <div class="blog-title">${isEn ? (p.titleEn||p.titleKo) : p.titleKo}</div>
+          <div class="blog-excerpt">${isEn ? (p.excerptEn||p.excerptKo) : p.excerptKo}</div>
+          <div class="blog-meta">
+            <span>${isEn ? (p.dateEn||p.dateKo) : p.dateKo}</span>
+            <span class="blog-read-more">${isEn ? 'Read more →' : '더 보기 →'}</span>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  /* 블로그 팝업 열기 */
+  function openBlog(i) {
+    const p = blogPosts[i];
+    const isEn = document.body.classList.contains('lang-en');
+    document.getElementById('bTag').textContent   = isEn ? (p.tagEn||p.tagKo)     : p.tagKo;
+    document.getElementById('bTitle').textContent = isEn ? (p.titleEn||p.titleKo) : p.titleKo;
+    document.getElementById('bMeta').textContent  = isEn ? (p.dateEn||p.dateKo)   : p.dateKo;
+
+    // 이미지 헤더
+    let mediaHtml = '';
+    if (p.imageUrl) {
+      mediaHtml += `<img src="${p.imageUrl}" alt="" style="width:100%;border-radius:12px;margin-bottom:1.25rem;max-height:280px;object-fit:cover;">`;
+    }
+    // YouTube embed
+    if (p.youtubeId) {
+      mediaHtml += `<div style="position:relative;padding-bottom:56.25%;height:0;border-radius:12px;overflow:hidden;margin-bottom:1.25rem;">
+        <iframe src="https://www.youtube.com/embed/${p.youtubeId}?rel=0"
+          style="position:absolute;top:0;left:0;width:100%;height:100%;"
+          frameborder="0" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture">
+        </iframe>
+      </div>`;
+    }
+
+    const body = isEn ? (p.bodyEn||p.bodyKo) : p.bodyKo;
+    document.getElementById('bBody').innerHTML = mediaHtml + body;
+    document.getElementById('blogOverlay').classList.add('active');
+  }
+
+  function closeBlog() {
+    document.getElementById('blogOverlay').classList.remove('active');
+    // iframe 정지
+    const iframe = document.querySelector('#bBody iframe');
+    if (iframe) iframe.src = iframe.src;
+  }
+  function handleBlogOverlay(e) {
+    if (e.target === document.getElementById('blogOverlay')) closeBlog();
+  }
+
+  /* ── Google Sheets에서 블로그 글 불러오기 ── */
+  function loadBlogPosts() {
+    const grid = document.getElementById('blogGrid');
+    const isEn = document.body.classList.contains('lang-en');
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--text-muted);">
+      <div style="font-size:24px;margin-bottom:8px;">⏳</div>
+      ${isEn ? 'Loading posts…' : '글을 불러오는 중…'}
+    </div>`;
+
+    if (!BLOG_SCRIPT_URL || BLOG_SCRIPT_URL.includes('YOUR_BLOG')) {
+      // URL 미설정 → 샘플 데이터로 시작
+      blogPosts = getSamplePosts();
+      renderBlog();
+      return;
+    }
+
+    fetch(`${BLOG_SCRIPT_URL}?action=getPosts`)
+      .then(r => r.json())
+      .then(data => {
+        blogPosts = data.posts || [];
+        renderBlog();
+      })
+      .catch(() => {
+        blogPosts = getSamplePosts();
+        renderBlog();
+      });
+  }
+
+  function getSamplePosts() {
+    return [
+      {
+        id: 'sample1', emoji: '🏠',
+        tagKo: '첫 집 구매', tagEn: 'First Home',
+        titleKo: '다운페이 3.5%로 정말 집을 살 수 있을까요?',
+        titleEn: 'Can You Really Buy a Home with 3.5% Down?',
+        dateKo: '2025년 6월', dateEn: 'June 2025',
+        excerptKo: 'FHA 론을 활용하면 생각보다 적은 다운페이로 내 집 마련이 가능합니다.',
+        excerptEn: "FHA loans make homeownership possible with less down payment than you'd expect.",
+        bodyKo: '<p>FHA 론은 <strong>크레딧 580점 이상이면 3.5% 다운페이</strong>로 신청 가능합니다. $400,000 집 기준 $14,000만 있어도 시작할 수 있어요.</p>',
+        bodyEn: '<p>With an FHA loan, you can buy with <strong>just 3.5% down if your credit is 580+</strong>. On a $400k home, that\'s only $14,000 to get started.</p>',
+        imageUrl: '', youtubeId: ''
+      },
+      {
+        id: 'sample2', emoji: '📊',
+        tagKo: '크레딧', tagEn: 'Credit',
+        titleKo: '크레딧 점수 50점 올리는 3가지 방법',
+        titleEn: '3 Ways to Boost Your Credit Score by 50 Points',
+        dateKo: '2025년 5월', dateEn: 'May 2025',
+        excerptKo: '모기지 신청 전 크레딧을 올리면 이자율이 크게 낮아집니다.',
+        excerptEn: 'Raising your credit before applying can significantly lower your rate.',
+        bodyKo: '<p><strong>카드 사용률을 30% 이하</strong>로 낮추고, 오래된 계좌를 유지하며, 신규 신용 신청을 자제하세요.</p>',
+        bodyEn: '<p>Keep your <strong>credit utilization below 30%</strong>, don\'t close old accounts, and avoid new credit applications before applying.</p>',
+        imageUrl: '', youtubeId: ''
+      }
+    ];
+  }
+
+
+  /* ══════════════════════════════════════════
+     ADMIN PANEL
+  ══════════════════════════════════════════ */
+
+  let adminLoggedIn = false;
+  let adminEditId   = null;  // null = new, string = existing post id
+  let _currentImgData = '';  // base64 or URL
+
+  /* Hidden tap trigger: footer를 5초 안에 5번 클릭 */
+  let _tapCount = 0, _tapTimer = null;
+  function adminTap() {
+    _tapCount++;
+    if (_tapTimer) clearTimeout(_tapTimer);
+    _tapTimer = setTimeout(() => { _tapCount = 0; }, 5000);
+    if (_tapCount >= 5) { _tapCount = 0; openAdmin(); }
+  }
+
+  function openAdmin() {
+    document.getElementById('adminOverlay').classList.add('active');
+    if (adminLoggedIn) { showAdminPanel(); }
+    else {
+      document.getElementById('adminPwBox').style.display   = 'block';
+      document.getElementById('adminPanel').style.display   = 'none';
+      document.getElementById('adminPwInput').value         = '';
+      document.getElementById('adminPwErr').textContent     = '';
+      setTimeout(() => document.getElementById('adminPwInput').focus(), 100);
+    }
+  }
+
+  function closeAdmin() {
+    document.getElementById('adminOverlay').classList.remove('active');
+    document.getElementById('adminPwInput').value = '';
+    document.getElementById('adminPwErr').textContent = '';
+    cancelAdminForm();
+  }
+
+  function adminLogin() {
+    const pw = document.getElementById('adminPwInput').value;
+    if (pw === ADMIN_PASSWORD) {
+      adminLoggedIn = true;
+      showAdminPanel();
+    } else {
+      const inp = document.getElementById('adminPwInput');
+      document.getElementById('adminPwErr').textContent = '비밀번호가 맞지 않습니다.';
+      inp.classList.add('shake');
+      inp.value = '';
+      setTimeout(() => inp.classList.remove('shake'), 400);
+    }
+  }
+
+  function adminLogout() { adminLoggedIn = false; closeAdmin(); }
+
+  function showAdminPanel() {
+    document.getElementById('adminPwBox').style.display = 'none';
+    document.getElementById('adminPanel').style.display = 'block';
+    cancelAdminForm();
+    renderAdminList();
+  }
+
+  /* 관리자 목록 */
+  function renderAdminList() {
+    const list = document.getElementById('adminPostList');
+    if (blogPosts.length === 0) {
+      list.innerHTML = '<p style="text-align:center;color:var(--text-muted);font-size:14px;padding:1rem;">아직 글이 없습니다.</p>';
+      return;
+    }
+    list.innerHTML = blogPosts.map((p, i) => `
+      <div class="admin-post-item">
+        <div class="admin-post-emoji">${p.imageUrl
+          ? `<img src="${p.imageUrl}" style="width:38px;height:38px;object-fit:cover;border-radius:8px;">`
+          : (p.youtubeId ? '▶️' : (p.emoji || '📝'))}</div>
+        <div class="admin-post-info">
+          <div class="admin-post-name">${p.titleKo}</div>
+          <div class="admin-post-date">${p.dateKo} · ${p.tagKo}</div>
+        </div>
+        <div class="admin-post-actions">
+          <button class="admin-btn-edit" onclick="openAdminForm(${i})">수정</button>
+          <button class="admin-btn-del"  onclick="deleteAdminPost(${i})">삭제</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  /* 이미지 업로드 핸들러 */
+  function handleImgUpload(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (file.size > 2 * 1024 * 1024) { alert('이미지는 2MB 이하만 가능합니다.'); return; }
+    const reader = new FileReader();
+    reader.onload = ev => {
+      _currentImgData = ev.target.result;          // base64 data URL
+      document.getElementById('adminImgPreview').src = _currentImgData;
+      document.getElementById('adminImgPreview').style.display = 'block';
+      document.getElementById('adminImgPlaceholder').style.display = 'none';
+      document.getElementById('af-imgUrl').value = '';
+    };
+    reader.readAsDataURL(file);
+  }
+  function handleImgUrl(val) {
+    if (!val) return;
+    _currentImgData = val;
+    document.getElementById('adminImgPreview').src = val;
+    document.getElementById('adminImgPreview').style.display = 'block';
+    document.getElementById('adminImgPlaceholder').style.display = 'none';
+  }
+  function clearAdminImg() {
+    _currentImgData = '';
+    document.getElementById('adminImgPreview').style.display = 'none';
+    document.getElementById('adminImgPlaceholder').style.display = 'flex';
+    document.getElementById('af-imgUrl').value = '';
+    document.getElementById('af-imgFile').value = '';
+  }
+
+  /* YouTube 미리보기 */
+  document.addEventListener('DOMContentLoaded', () => {
+    const ytInput = document.getElementById('af-youtube');
+    if (ytInput) ytInput.addEventListener('input', function() {
+      const id = extractYouTubeId(this.value);
+      const wrap = document.getElementById('ytPreviewWrap');
+      const frame = document.getElementById('ytPreviewFrame');
+      if (id) {
+        frame.src = `https://www.youtube.com/embed/${id}`;
+        wrap.style.display = 'block';
+      } else {
+        frame.src = '';
+        wrap.style.display = 'none';
+      }
+    });
+    loadBlogPosts();
+  });
+
+  /* 관리자 폼 열기 */
+  function openAdminForm(idx) {
+    const form = document.getElementById('adminForm');
+    form.classList.add('open');
+    document.getElementById('adminFormTitle').textContent = idx === -1 ? '✏️ 새 글 작성' : '✏️ 글 수정';
+    clearAdminImg();
+    document.getElementById('ytPreviewWrap').style.display = 'none';
+    document.getElementById('ytPreviewFrame').src = '';
+
+    const fields = ['af-emoji','af-tagKo','af-tagEn','af-titleKo','af-titleEn',
+                    'af-dateKo','af-dateEn','af-excerptKo','af-excerptEn',
+                    'af-bodyKo','af-bodyEn','af-youtube','af-imgUrl'];
+
+    if (idx >= 0) {
+      const p = blogPosts[idx];
+      adminEditId = p.id;
+      const vals = {
+        'af-emoji': p.emoji, 'af-tagKo': p.tagKo, 'af-tagEn': p.tagEn,
+        'af-titleKo': p.titleKo, 'af-titleEn': p.titleEn,
+        'af-dateKo': p.dateKo, 'af-dateEn': p.dateEn,
+        'af-excerptKo': p.excerptKo, 'af-excerptEn': p.excerptEn,
+        'af-bodyKo': p.bodyKo, 'af-bodyEn': p.bodyEn,
+        'af-youtube': p.youtubeId || '', 'af-imgUrl': ''
+      };
+      fields.forEach(id => document.getElementById(id).value = vals[id] || '');
+      if (p.imageUrl) {
+        _currentImgData = p.imageUrl;
+        document.getElementById('af-imgUrl').value = p.imageUrl;
+        document.getElementById('adminImgPreview').src = p.imageUrl;
+        document.getElementById('adminImgPreview').style.display = 'block';
+        document.getElementById('adminImgPlaceholder').style.display = 'none';
+      }
+      if (p.youtubeId) {
+        document.getElementById('ytPreviewFrame').src = `https://www.youtube.com/embed/${p.youtubeId}`;
+        document.getElementById('ytPreviewWrap').style.display = 'block';
+      }
+    } else {
+      adminEditId = null;
+      fields.forEach(id => document.getElementById(id).value = '');
+      document.getElementById('af-emoji').value = '📝';
+    }
+    form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function cancelAdminForm() {
+    const form = document.getElementById('adminForm');
+    if (form) form.classList.remove('open');
+    adminEditId = null;
+    clearAdminImg();
+    const wrap = document.getElementById('ytPreviewWrap');
+    if (wrap) { wrap.style.display = 'none'; document.getElementById('ytPreviewFrame').src = ''; }
+  }
+
+  /* ── 저장 (Google Sheets에 전송) ── */
+  function saveAdminPost() {
+    const get = id => document.getElementById(id).value.trim();
+    if (!get('af-titleKo')) { alert('한국어 제목을 입력해주세요.'); return; }
+
+    const ytId = extractYouTubeId(get('af-youtube'));
+    const post = {
+      id:        adminEditId || ('post_' + Date.now()),
+      emoji:     get('af-emoji') || '📝',
+      tagKo:     get('af-tagKo'),     tagEn:     get('af-tagEn'),
+      titleKo:   get('af-titleKo'),   titleEn:   get('af-titleEn'),
+      dateKo:    get('af-dateKo'),    dateEn:    get('af-dateEn'),
+      excerptKo: get('af-excerptKo'), excerptEn: get('af-excerptEn'),
+      bodyKo:    get('af-bodyKo'),    bodyEn:    get('af-bodyEn'),
+      youtubeId: ytId,
+      imageUrl:  _currentImgData,
+      action:    adminEditId ? 'updatePost' : 'addPost'
+    };
+
+    const saveBtn = document.querySelector('.admin-save-btn');
+    saveBtn.textContent = '저장 중…';
+    saveBtn.disabled = true;
+
+    if (!BLOG_SCRIPT_URL || BLOG_SCRIPT_URL.includes('YOUR_BLOG')) {
+      // URL 미설정: 로컬 메모리에만 저장
+      applyPostLocally(post);
+      saveBtn.textContent = '저장하기 ✓';
+      saveBtn.disabled = false;
+      return;
+    }
+
+    fetch(BLOG_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(post)
+    })
+    .then(() => {
+      applyPostLocally(post);
+      saveBtn.textContent = '저장하기 ✓';
+      saveBtn.disabled = false;
+    })
+    .catch(() => {
+      alert('저장 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+      saveBtn.textContent = '저장하기 ✓';
+      saveBtn.disabled = false;
+    });
+  }
+
+  function applyPostLocally(post) {
+    if (adminEditId) {
+      const idx = blogPosts.findIndex(p => p.id === adminEditId);
+      if (idx >= 0) blogPosts[idx] = post;
+    } else {
+      blogPosts.unshift(post);
+    }
+    cancelAdminForm();
+    renderAdminList();
+    renderBlog();
+  }
+
+  /* ── 삭제 ── */
+  function deleteAdminPost(idx) {
+    const p = blogPosts[idx];
+    if (!confirm(`"${p.titleKo}" 글을 삭제하시겠습니까?`)) return;
+
+    if (!BLOG_SCRIPT_URL || BLOG_SCRIPT_URL.includes('YOUR_BLOG')) {
+      blogPosts.splice(idx, 1);
+      renderAdminList(); renderBlog(); return;
+    }
+
+    fetch(BLOG_SCRIPT_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'deletePost', id: p.id })
+    }).finally(() => {
+      blogPosts.splice(idx, 1);
+      renderAdminList(); renderBlog();
+    });
+  }
+
+
+  /* ══════════════════════════════════════════
+     PAIN CARDS
+  ══════════════════════════════════════════ */
+  const cards = [
+    { icon:'📄', q:'서류가 너무 많아서\n뭘 준비해야 할지 모르겠어요',
+      a:'기본적으로 필요한 서류는 <strong>신분증, 최근 2년치 세금보고(W-2), 최근 30일 페이스텁, 최근 2~3개월 은행 잔고증명</strong> 정도입니다.',
+      tip:'💡 <strong>두드림 팁:</strong> 서류 준비 체크리스트를 무료로 드립니다. 세미나에서 바로 확인하세요!' },
+    { icon:'🏦', q:'은행에서 거절당한 적 있어서\n또 신청하기 두렵습니다',
+      a:'은행은 자기 기준에 맞지 않으면 무조건 거절합니다. 하지만 모기지 브로커는 <strong>수십 개의 렌더를 한 번에 비교</strong>하기 때문에 다른 옵션이 있습니다.',
+      tip:'💡 <strong>두드림 팁:</strong> 거절 이유를 분석하면 해결책이 보입니다. 무료 상담으로 원인을 파악해 보세요.' },
+    { icon:'💸', q:'다운페이가 얼마나 있어야\n집을 살 수 있는지 몰라요',
+      a:'<strong>FHA 론은 3.5%</strong>부터 가능하고, <strong>VA·USDA 론은 0%</strong>도 가능합니다. 다운페이 지원 프로그램(DPA)도 있습니다.',
+      tip:'💡 <strong>두드림 팁:</strong> 세미나에서 내 상황에 맞는 옵션을 바로 확인해 드려요.' },
+    { icon:'🤯', q:'Rate, APR, PMI...\n용어가 너무 어렵습니다',
+      a:'<strong>Rate</strong>는 이자율, <strong>APR</strong>은 수수료 포함 실제 비용, <strong>PMI</strong>는 다운페이 20% 미만 시 내는 보험료입니다.',
+      tip:'💡 <strong>두드림 팁:</strong> 세미나에서 모기지 용어 10개를 10분 만에 완전 정복할 수 있습니다!' },
+    { icon:'✅', q:'Pre-Approval이 필요해요',
+      a:'Pre-Approval은 <strong>"이 금액까지 빌릴 수 있다"는 공식 확인서</strong>입니다. 보통 <strong>1~3일</strong> 안에 받을 수 있으며, 무료입니다.',
+      tip:'💡 <strong>두드림 팁:</strong> Pre-Approval 전에 크레딧을 점검하면 더 좋은 조건을 받을 수 있어요.' },
+    { icon:'🤔', q:'집 사기 vs 집 렌트,\n뭐가 더 이득일까요?',
+      a:'렌트는 매달 돈이 나가고 아무것도 남지 않지만, 모기지는 매달 내는 돈이 <strong>내 자산(Equity)</strong>으로 쌓입니다.',
+      tip:'💡 <strong>두드림 팁:</strong> 세미나에서 "사기 vs 렌트" 손익 계산을 직접 해드립니다!' },
+    { icon:'📉', q:'집이 있는데\n이자율을 낮추고 싶어요',
+      a:'이걸 <strong>Refinance(재융자)</strong>라고 합니다. <strong>Cash-Out Refi</strong>로 집에 쌓인 Equity를 현금으로 꺼내는 것도 가능합니다.',
+      tip:'💡 <strong>두드림 팁:</strong> Refinance가 유리한지 무료로 분석해 드립니다.' },
+    { icon:'💼', q:'자영업자인데\n모기지가 가능할까요?',
+      a:'가능합니다! <strong>Bank Statement Loan</strong>이나 <strong>No-Doc Loan</strong> 같은 특별 프로그램이 있습니다. 최근 12~24개월 은행 내역만으로도 소득을 증명할 수 있어요.',
+      tip:'💡 <strong>두드림 팁:</strong> 세금보고 없이도 융자받는 방법, 세미나에서 바로 알려드립니다!' }
+  ];
+
+  function openCard(i) {
+    const c = cards[i];
+    document.getElementById('pIcon').textContent = c.icon;
+    document.getElementById('pQ').textContent    = c.q;
+    document.getElementById('pA').innerHTML      = c.a;
+    document.getElementById('pTip').innerHTML    = c.tip;
+    document.getElementById('cardOverlay').classList.add('active');
+  }
+  function closeCard() { document.getElementById('cardOverlay').classList.remove('active'); }
+  function handleCardOverlay(e) { if (e.target === document.getElementById('cardOverlay')) closeCard(); }
+
+
+  /* ══════════════════════════════════════════
+     SEMINAR POPUP
+  ══════════════════════════════════════════ */
+  function getMinDate() {
+    const d = new Date(); d.setDate(d.getDate() + 2);
+    return d.toISOString().split('T')[0];
+  }
+  function openSeminar() {
+    document.getElementById('apptDate').min = getMinDate();
+    document.getElementById('semForm').style.display    = 'block';
+    document.getElementById('semSuccess').style.display = 'none';
+    document.getElementById('submitBtn').disabled       = false;
+    document.getElementById('submitBtn').innerHTML      = '<span class="ko">신청서 제출하기 →</span><span class="en">Submit →</span>';
+    document.getElementById('errMsg').style.display     = 'none';
+    document.getElementById('semOverlay').classList.add('active');
+  }
+  function closeSeminar() { document.getElementById('semOverlay').classList.remove('active'); }
+  function handleSemOverlay(e) { if (e.target === document.getElementById('semOverlay')) closeSeminar(); }
+
+  function validate() {
+    const isEn = document.body.classList.contains('lang-en');
+    const date  = document.getElementById('apptDate').value;
+    const time  = document.getElementById('apptTime').value;
+    const name  = document.getElementById('userName').value.trim();
+    const phone = document.getElementById('userPhone').value.trim();
+    const email = document.getElementById('userEmail').value.trim();
+    const topic = document.getElementById('userTopic').value;
+    if (!date||!time)               return isEn?'Please select a date and time.':'희망 날짜와 시간을 선택해 주세요.';
+    if (date < getMinDate())        return isEn?'Please book at least 2 days ahead.':'예약은 오늘로부터 2일 후부터 가능합니다.';
+    if (!name)                      return isEn?'Please enter your name.':'이름을 입력해 주세요.';
+    if (!phone)                     return isEn?'Please enter your phone number.':'전화번호를 입력해 주세요.';
+    if (!email||!email.includes('@'))return isEn?'Please enter a valid email.':'올바른 이메일 주소를 입력해 주세요.';
+    if (!topic)                     return isEn?'Please select a topic.':'궁금한 주제를 선택해 주세요.';
+    return null;
+  }
+
+  function submitForm() {
+    const err = validate();
+    const errEl = document.getElementById('errMsg');
+    if (err) { errEl.textContent = err; errEl.style.display = 'block'; return; }
+    errEl.style.display = 'none';
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.innerHTML = document.body.classList.contains('lang-en') ? 'Sending…' : '전송 중…';
+    const payload = {
+      user_name:  document.getElementById('userName').value.trim(),
+      user_phone: document.getElementById('userPhone').value.trim(),
+      user_email: document.getElementById('userEmail').value.trim(),
+      appt_date:  document.getElementById('apptDate').value,
+      appt_time:  document.getElementById('apptTime').value,
+      user_topic: document.getElementById('userTopic').value,
+      user_note:  document.getElementById('userNote').value.trim()
+    };
+    fetch(SEMINAR_SCRIPT_URL, {
+      method:'POST', mode:'no-cors',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(payload)
+    })
+    .then(() => {
+      document.getElementById('semForm').style.display    = 'none';
+      document.getElementById('semSuccess').style.display = 'block';
+    })
+    .catch(() => {
+      btn.disabled = false;
+      btn.innerHTML = '<span class="ko">신청서 제출하기 →</span><span class="en">Submit →</span>';
+      errEl.textContent = '전송 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.';
+      errEl.style.display = 'block';
+    });
+  }
+</script>
+</body>
+</html>
